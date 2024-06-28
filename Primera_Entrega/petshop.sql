@@ -61,6 +61,8 @@ CREATE TABLE PRODUCTOS (
 	nombre varchar(60) NOT NULL,
 	descripción varchar(300) NOT NULL,
 	imagen varchar(100),
+    cantidad_disponible int,
+    estado enum ('publicado','borrador','no disponible'),
 	id_subcategoria	 integer NOT NULL
 );
 
