@@ -6,20 +6,20 @@ USE petshop_ecommerce;
 -- Tablas
 CREATE TABLE USUARIOS (
 	id_usuario int PRIMARY KEY,
-	nombre_de_usuario varchar(200) NOT NULL,
-	nombre varchar(200) NOT NULL,
-	apellido varchar(200) NOT NULL,
-	email varchar(200) NOT NULL,
-    contrasena varchar(200) NOT NULL
+	nombre_de_usuario varchar(60) NOT NULL,
+	nombre varchar(60) NOT NULL,
+	apellido varchar(60) NOT NULL,
+	email varchar(60) NOT NULL,
+    contrasena varchar(60) NOT NULL
 );
 
 CREATE TABLE DIRECCIONES (
 	id_direccion int PRIMARY KEY,
-	calle varchar(200) NOT NULL,
+	calle varchar(60) NOT NULL,
     piso varchar(10),
-	localidad varchar(200) NOT NULL,
-    provincia varchar(200) NOT NULL,
-    pais varchar(200) NOT NULL,
+	localidad varchar(60) NOT NULL,
+    provincia varchar(60) NOT NULL,
+    pais varchar(60) NOT NULL,
     codigo_postal varchar(20) NOT NULL,
 	id_usuario int NOT NULL
 );
@@ -53,32 +53,32 @@ CREATE TABLE DETALLE_ORDEN (
 
 CREATE TABLE METODOS_DE_PAGO(
 	id_metodo_pago int PRIMARY KEY,
-    nombre varchar(200)
+    nombre varchar(60)
 );
 
 CREATE TABLE PRODUCTOS (
 	id_producto integer PRIMARY KEY,
-	nombre varchar(200) NOT NULL,
-	descripción varchar(200) NOT NULL,
-	imagen varchar(200),
+	nombre varchar(60) NOT NULL,
+	descripción varchar(300) NOT NULL,
+	imagen varchar(100),
 	id_subcategoria	 integer NOT NULL
 );
 
 CREATE TABLE SUBCATEGORIAS (
 	id_subcategoria integer PRIMARY KEY,
-	nombre varchar(200) NOT NULL,
+	nombre varchar(60) NOT NULL,
 	id_categoria integer NOT NULL
 );
 
 CREATE TABLE CATEGORIAS (
 	id_categoria integer PRIMARY KEY,
-	nombre varchar(200)NOT NULL,
+	nombre varchar(60)NOT NULL,
 	id_animal integer NOT NULL
 );
 
 CREATE TABLE ANIMALES (
 	id_animal integer PRIMARY KEY,
-    nombre varchar(200) NOT NULL
+    nombre varchar(60) NOT NULL
 );
 
 -- Claves foraneas
