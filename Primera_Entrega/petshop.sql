@@ -6,9 +6,9 @@ USE petshop_ecommerce;
 -- Tablas
 CREATE TABLE USUARIOS (
 	id_usuario int PRIMARY KEY,
-	nombre_de_usuario varchar(60) NOT NULL,
-	nombre varchar(60) NOT NULL,
-	apellido varchar(60) NOT NULL,
+	nombre_de_usuario varchar(60) NOT NULL UNIQUE,
+	nombres varchar(80) NOT NULL,
+	apellidos varchar(80) NOT NULL,
 	email varchar(60) NOT NULL,
     contrasena varchar(60) NOT NULL
 );
@@ -30,25 +30,25 @@ CREATE TABLE CARRITOS (
     total_a_pagar int
 );
 CREATE TABLE ITEM_CARRITO (
-	id int PRIMARY KEY,
     id_carrito int NOT NULL,
     id_producto int NOT NULL,
-    cantidad int NOT NULL
+    cantidad int NOT NULL,
+    PRIMARY KEY (id_carrito, id_producto)
 );
 
 CREATE TABLE ORDENES_DE_COMPRA (
 	id_orden int PRIMARY KEY,
     id_usuario int NOT NULL,
     id_metodo_pago int NOT NULL,
-    fecha_de_orden date NOT NULL,
+    fecha_de_orden datetime NOT NULL,
     total_a_pagar int
 );
 
-CREATE TABLE DETALLE_ORDEN (
-	id int PRIMARY KEY,
+CREATE TABLE DETALLE_DE_ORDEN (
 	id_orden int NOT NULL,
 	id_producto int NOT NULL,
-	cantidad int NOT NULL
+	cantidad int NOT NULL,
+    PRIMARY KEY (id_orden, id_producto)
 );
 
 CREATE TABLE METODOS_DE_PAGO(
@@ -107,9 +107,9 @@ ALTER TABLE ITEM_CARRITO ADD FOREIGN KEY (id_carrito) REFERENCES CARRITOS (id_ca
 
 ALTER TABLE ITEM_CARRITO ADD FOREIGN KEY (id_producto) REFERENCES PRODUCTOS (id_producto);
 
-ALTER TABLE DETALLE_ORDEN ADD FOREIGN KEY (id_orden) REFERENCES ORDENES_DE_COMPRA (id_orden);
+ALTER TABLE DETALLE_DE_ORDEN ADD FOREIGN KEY (id_orden) REFERENCES ORDENES_DE_COMPRA (id_orden);
 
-ALTER TABLE DETALLE_ORDEN ADD FOREIGN KEY (id_producto) REFERENCES PRODUCTOS (id_producto);
+ALTER TABLE DETALLE_DE_ORDEN ADD FOREIGN KEY (id_producto) REFERENCES PRODUCTOS (id_producto);
 
 ALTER TABLE ORDENES_DE_COMPRA ADD FOREIGN KEY (id_usuario) REFERENCES USUARIOS (id_usuario);
 
