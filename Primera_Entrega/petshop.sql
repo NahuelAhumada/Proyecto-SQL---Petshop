@@ -37,7 +37,7 @@ CREATE TABLE ITEM_CARRITO (
 );
 
 CREATE TABLE ORDENES_DE_COMPRA (
-	id_orden integer PRIMARY KEY,
+	id_orden int PRIMARY KEY,
     id_usuario int NOT NULL,
     id_metodo_pago int NOT NULL,
     fecha_de_orden date NOT NULL,
@@ -45,10 +45,10 @@ CREATE TABLE ORDENES_DE_COMPRA (
 );
 
 CREATE TABLE DETALLE_ORDEN (
-	id integer PRIMARY KEY,
-	id_orden integer NOT NULL,
-	id_producto integer NOT NULL,
-	cantidad integer NOT NULL
+	id int PRIMARY KEY,
+	id_orden int NOT NULL,
+	id_producto int NOT NULL,
+	cantidad int NOT NULL
 );
 
 CREATE TABLE METODOS_DE_PAGO(
@@ -57,29 +57,36 @@ CREATE TABLE METODOS_DE_PAGO(
 );
 
 CREATE TABLE PRODUCTOS (
-	id_producto integer PRIMARY KEY,
+	id_producto int PRIMARY KEY,
 	nombre varchar(60) NOT NULL,
 	descripción varchar(300) NOT NULL,
 	imagen varchar(100),
     cantidad_disponible int,
     estado enum ('publicado','borrador','no disponible'),
-	id_subcategoria	 integer NOT NULL
+	id_subcategoria	 int NOT NULL,
+    id_marca int
+);
+
+CREATE TABLE MARCAS(
+	id_marca int PRIMARY KEY,
+    nombre varchar(60),
+    contacto varchar(60)
 );
 
 CREATE TABLE SUBCATEGORIAS (
-	id_subcategoria integer PRIMARY KEY,
+	id_subcategoria int PRIMARY KEY,
 	nombre varchar(60) NOT NULL,
-	id_categoria integer NOT NULL
+	id_categoria int NOT NULL
 );
 
 CREATE TABLE CATEGORIAS (
-	id_categoria integer PRIMARY KEY,
+	id_categoria int PRIMARY KEY,
 	nombre varchar(60)NOT NULL,
-	id_animal integer NOT NULL
+	id_animal int NOT NULL
 );
 
 CREATE TABLE ANIMALES (
-	id_animal integer PRIMARY KEY,
+	id_animal int PRIMARY KEY,
     nombre varchar(60) NOT NULL
 );
 
@@ -89,6 +96,8 @@ ALTER TABLE DIRECCIONES ADD FOREIGN KEY (id_usuario) REFERENCES USUARIOS (id_usu
 ALTER TABLE CARRITOS ADD FOREIGN KEY (id_usuario) REFERENCES USUARIOS (id_usuario);
 
 ALTER TABLE PRODUCTOS ADD FOREIGN KEY (id_subcategoria) REFERENCES SUBCATEGORIAS (id_subcategoria);
+
+ALTER TABLE PRODUCTOS ADD FOREIGN KEY (id_marca) REFERENCES MARCAS (id_marca);
 
 ALTER TABLE SUBCATEGORIAS ADD FOREIGN KEY (id_categoria) REFERENCES CATEGORIAS (id_categoria);
 
