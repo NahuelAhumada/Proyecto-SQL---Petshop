@@ -32,7 +32,7 @@ Esta es una base de datos diseñada para la gestión de un e-commerce con la tem
   - Atributos: id_carrito, id_producto, cantidad
 
 5. **ORDENES_DE_COMPRA**
-  - Tabla para registrar las compras efectuadas.
+  - Tabla para hechos que registra en que momento se realiza transaccion de compra y el usuario la efectua.
   - Atributos: id_orden, id_usuario, id_metodo_pago, fecha_de_orden, total_a_pagar
   
 6. **DETALLE_DE_ORDEN**
