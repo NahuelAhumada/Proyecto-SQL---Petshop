@@ -17,49 +17,53 @@ Esta es una base de datos diseñada para la gestión de un e-commerce con la tem
 
 1. **USUARIOS**
   - Almacena los datos de cada usuario registrado en el ecommerce
-  - Atributos: id_usuario, nombre_de_usuario, nombres, apellidos,email
+  - Atributos: id_usuario, nombre_de_usuario, nombres, apellidos,email, contresena
     
 2. **DIRECCIONES**
   - Cada usuario tiene la posibilidad de tener más una dirección y, en ciertos casos, más de un usuario puede tener la misma dirección. Por lo tanto se utiliza una tabla de direcciones relacionadas a usuarios
-  - Atributos: id_direccion, calle, piso, localidad, provincia, pais, codigo_postal, id_usuario
-    
-3. **CARRITOS**
+  - Atributos: id_direccion, calle, piso, localidad, provincia, pais, codigo_postal
+
+3. **USUARIOS_DIRECCIONES**
+- Debido a que mas de un usuario puede compartir la mismo domicilio con otra persona y al mismo tiempo tener más de un domicilio valido para realizar un envio, estable una relación n a n
+- Atributos: id_usuario, id_direccion
+   
+4. **CARRITOS**
   - Tabla de Carrito de compra. Cada uno esta asignado a un unico usuario. Pasado cierto tiempo, un carrito de compra que no haya efecutado una compra debería vaciarse, por lo tanto se almacena la fecha de creación para poder verificarla.
   - Atributos: id_carrito, id_usuario, fecha_creacion, total_a_pagar
 
-4. **ITEM_CARRITO**
+5. **ITEM_CARRITO**
   - Tabla intermedia para la relación de carritos con los productos.
   - Atributos: id_carrito, id_producto, cantidad
 
-5. **ORDENES_DE_COMPRA**
+6. **ORDENES_DE_COMPRA**
   - Tabla para hechos que registra en que momento se realiza transaccion de compra y el usuario la efectua.
   - Atributos: id_orden, id_usuario, id_metodo_pago, fecha_de_orden, total_a_pagar
   
-6. **DETALLE_DE_ORDEN**
+7. **DETALLE_DE_ORDEN**
   - Tabla de union para la relacion n-n entre las ordenes de compra y los productos. Debido a que es posible que el precio oficial de un producto no coincida con el precio final, se e agrego un campo extra de precio en esta tabla para que figure en la facturación final.
   - Atributos: id_orden, id_producto, id_cantida, precio_final
 
-7. **METODOS_DE_PAGO**
+8. **METODOS_DE_PAGO**
   - Tabla para registrar los metodos de pago disponibles
   - Atributos: id_metodo_pago, nombre
 
-8. **PRODUCTOS**
+9. **PRODUCTOS**
   - Registro de los productos disponible. Cada producto cuenta con sus respectivo precio, descripción, imagen de publicación, cantidad en stock y un dato que indica en que estado se encuentra (publicado, en borrador o no disponible). Los productos deben poder filtrarse dentro de la pagina, tanto por la marca como por su categoria.
   - Atributos: id_producto, nombre, descripción, imagen, cantidad_disponible, estado, id_subcategoria, id_marca
 
-9. **MARCAS**
+10. **MARCAS**
   - Tabla que almacena las marcas disponibles con las se trabaja
   - Atributos: id_marca, nombre
 
-10. **SUBCATEGORIAS**
+11. **SUBCATEGORIAS**
   - Ultimo nivel  de categorias para los productos. Cada subcategoria debe estar relacionada a la categoria que le corresponde(Ejemplo: La categoria de Salud puede relacionarse con las subcategorias Antiparacitarios y Medicamentos)
   - Atributos: id_subcategoria, nombre, id_categoria
 
-11. **CATEGORIAS**
+12. **CATEGORIAS**
   - Tabla de categorias para los productos, relacionado a la especie animal para la cual esta dirigido.
   - Atributos: id_categoria, nombre, id_animal
   
-12. **ANIMALES**
+13. **ANIMALES**
   - Tabla que almacena los tipos de animales para los cuales se van a vender los productos
   - Atributos: id_animales, nombre
 
