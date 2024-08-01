@@ -67,7 +67,7 @@ Esta es una base de datos diseñada para la gestión de un e-commerce con la tem
   - Tabla que almacena los tipos de animales para los cuales se van a vender los productos
   - Atributos: id_animales, nombre
 
-[![Petshop-3.png](https://i.postimg.cc/7hcCbprn/Petshop-3.png)](https://postimg.cc/YL62sD9v)
+![DRM](images/Petshop.png)
 
 ### Ideas para integrar al proyecto final:
 1. Llevar a cabo un registro de proveedores, de acuerdo a la marca de los productos
