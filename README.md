@@ -12,6 +12,14 @@ Esta es una base de datos diseñada para la gestión de un e-commerce con la tem
 2. Gestion de productos: Cada producto registrado debe estar categorizado tanto por el tipo de animal al que este destinado como por sus caracteristicas (Ejemplo: en un tienda puede haber alimentos para perros como para peces. Mientras que los alimentos para perros pueden categorizarse por edad, los alimentos para peces pueden categorizarse dependiendo de si son de agua fria o tropicales). Asimismo, cada registro debe contener información relevante para su publicación.
 3. Gestion de Carrito de compra: Cada usuario debe estar relacionado a un carrito de compra con el cual podrá gestionar la compra de varios productos.
 4. Gestion de Compras: Se debe llevar un registro de las compras efectuadas, teniendo los productos que la componen, incluyendo sus respectivas cantidades, el usuario que la efectua, la fecha y hora en la que se realize y el metodo de pago utilizado.
+## Importante
+Para la funcionalidad de los STORED PROCEDURES, es necesario correr la siguiente linea:
+
+```sql
+SET SQL_SAFE_UPDATE=FALSE;
+```
+En mi version de MYSQL WORKBENCH 8.0 generó un error y tuve que cambiarlo de la siguiente forma
+-> Edit -> Preferences -> SQL Editor -> Destildar la opcion 'Safe updates'
 
 ### Tablas
 
@@ -68,6 +76,36 @@ Esta es una base de datos diseñada para la gestión de un e-commerce con la tem
   - Atributos: id_animales, nombre
 
 ![DRM](images/Petshop.png)
+
+### Insercion
+Los datos para cada tabla se obtienen al correr el archivo  'population.sql' por medio de multiples INSERT INTO
+
+### Vistas
+
+Se consideró de utilidad tener a disponición las siguientes vista:
+1. TotalAPagarPorCarrito: Almacena una query que permite visualizar el precio de cada carrito de compra activo con el fin de tener a consideración las posibles ventas
+2. DiezProductosMasComprados: Permite mostrar los 10 productos más vendidos historicamente
+
+### STORED PROCEDURES
+
+1. revision_carritos():
+  Mediante este procedimiento se buscar automatizar el limpiado de aquellos carritos de compra que llevan abierto por más de 2 dos días. Si bien esta implementado como un STORED PROCEDURE, podría implementarse tambien como un EVENTO.
+
+```sql
+DELETE FROM ITEM_CARRITO
+    WHERE id_carrito IN
+		(SELECT c.id_carrito FROM CARRITOS as C
+    WHERE c.fecha_interaccion<= date_sub(now(), INTERVAL 2 DAY)); 
+```
+
+2. realizar_compra(IN var_id_carrito INT, IN var_id_metodo_pago INT)
+   Por medio de este procedimiento, una vez que sa validen los datos ingresados, se genera una nueva orden de compra correspondiendo al usuario dueño del carrito. Luego de esto, los datos de cada producto relacionado al carrito, pasan a ser relacionado a la orden de compra generada ingresandolos en la tabla DETALLE_ORDEN. Una vez hecho esto, se vacia el carrito de compra correspodiente al id_carrito que se pasó por parametro.
+
+###Triggers
+1. validar_productos_al_insertar()
+2. validar_producto_al_actualizar
+3. crear_carrito_para_usuario
+   
 
 ### Ideas para integrar al proyecto final:
 1. Llevar a cabo un registro de proveedores, de acuerdo a la marca de los productos
