@@ -64,7 +64,7 @@ CREATE TABLE METODOS_DE_PAGO(
 CREATE TABLE PRODUCTOS (
 	id_producto int PRIMARY KEY AUTO_INCREMENT,
 	nombre varchar(100) NOT NULL,
-	descripción varchar(350) NOT NULL,
+	descripcion varchar(350) NOT NULL,
     precio decimal(10, 2),
 	imagen varchar(100),
     cantidad_disponible int DEFAULT 1,
