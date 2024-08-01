@@ -36,9 +36,7 @@ VALUES
 ('Salud',4),
 ('Alimentos',5),
 ('Accesorios',5);
-SELECT cat.id_categoria, cat.nombre, a.nombre FROM CATEGORIAS as cat
-JOIN ANIMALES as a
-ON cat.id_animal = a.id_animal;
+
 /*Tabla subcategorias*/
 INSERT INTO  petshop_ecommerce.SUBCATEGORIAS
 (nombre , id_categoria)
@@ -138,6 +136,7 @@ VALUES
     ('Pouch Whiskas Pollo En Salsa X 85 Grs Adulto','Whiskas Gato Sobrecito es alimento húmedo 100% completo y balanceado cocido al vapor.',650.00,'/whiskahumedo85g',8,'publicado',19,16),
     ('Royal Canin Gato Adulto Urinary High Dilution S/O X 7.5 Kg','Royal Canin Urinary High Dilution es un alimento dietético completo para gatos destinado a la disolución de los cálculos de estruvita y a la reducción de las recidivas por sus propiedades acidificantes y por su capacidad de generar un bajo nivel de saturación de la orina',81704.00,'/royalcaninuri7kg',1,'publicado',20,3),
     ('Marina Deluxe Aq.Kit 38L','Acuario de 38 Litros de altisima calidad',150000.00,'/marinakit38L',1,'borrador',42,13);
+
 /* Tabla Metodos de Pago*/
 
 INSERT INTO petshop_ecommerce.METODOS_DE_PAGO
@@ -149,7 +148,7 @@ VALUES
     ('Credito a una cuota'),
     ('Credito a tres cuotas');
 /* Tabla Usuarios*/
-INSERT INTO USUARIOS 
+INSERT INTO petshop_ecommerce.USUARIOS 
     (nombre_de_usuario, nombres, apellidos, email, contrasena)
 VALUES
     ('cborel0', 'Chandal', 'Borel', 'cborel0@kickstarter.com', 'vN_Ud6x6F'),
@@ -174,7 +173,7 @@ VALUES
     ('lruecastlej', 'Ludovico', 'Ruecastle', 'lruecastlej@marketwatch.com', 'vS.oRc_Z6|I"_Lu_');
 
 /* Tabla Direcciones*/ 
-INSERT INTO DIRECCIONES (calle, piso, localidad, provincia, pais, codigo_postal) VALUES
+INSERT INTO petshop_ecommerce.DIRECCIONES (calle, piso, localidad, provincia, pais, codigo_postal) VALUES
 ('Av. Juan Domingo Peron 742', '1A', 'Hurlingham', 'Buenos Aires', 'Argentina', '1234'),
 ('Churruca 5368', NULL, 'Córdoba', 'Córdoba', 'Argentina', '5678'),
 ('Peralta 223', '', 'Mendoza', 'Mendoza', 'Argentina', '9012'),
@@ -191,12 +190,122 @@ INSERT INTO DIRECCIONES (calle, piso, localidad, provincia, pais, codigo_postal)
 ('Rivadavia 742', NULL, 'Comodoro Rivadavia', 'Chubut', 'Argentina', '8899'),
 ('Pasaje Luna Llena 963', '10J', 'Ushuaia', 'Tierra del Fuego', 'Argentina', '1010');
 
+
 /* Tabla USUARIOS_DIRECCIONES*/
-INSERT INTO USUARIOS_DIRECCIONES(id_usuario, id_direccion) VALUES
-(1,1),
-(2,1),
-(2,2),
-(3,3),
-(4,4),
-(5,4),
-(6,5);
+INSERT INTO petshop_ecommerce.USUARIOS_DIRECCIONES(id_usuario, id_direccion) VALUES
+(1,1),(2,1),(2,2),(3,3),(4,4),(5,4),
+(6,5),(7,6),(8,7),(9,8),(10,8),(11,9),
+(12,10),(13,10),(14,11),(15,12),(16,12),
+(17,13),(18,14),(19,15),(20,8);
+
+/*Tabla CARRITOS*/
+INSERT INTO petshop_ecommerce.CARRITOS (id_usuario, fecha_interaccion) VALUES
+(1, '2023-07-01 10:00:00'),
+(2, '2023-08-02 11:30:00'),
+(3, '2023-08-15 18:45:00'),
+(4, '2023-09-04 09:00:00'),
+(5, '2023-11-05 15:15:00'),
+(6, '2024-01-02 11:30:00'),
+(7, '2024-02-09 10:45:00'),
+(8, '2024-02-15 17:00:00'),
+(9, '2024-02-22 15:15:00'),
+(10, '2024-03-04 12:30:00'),
+(11, '2024-04-13 14:45:00'),
+(12, '2024-04-22 15:00:00'),
+(13, '2024-05-03 10:15:00'),
+(14, '2024-05-10 13:30:00'),
+(15, '2024-06-01 12:45:00'),
+(16, now()),
+(17, now()),
+(18, now()),
+(19, now()),
+(20, now());
+/* Tabla ITEM_CARRITO*/
+INSERT INTO petshop_ecommerce.ITEM_CARRITO (id_carrito, id_producto, precio_final, cantidad) VALUES
+(1, 1, 35400.00, 2),
+(1, 2, 19800.00, 2),
+(2, 2, 19800.00, 1),
+(2, 3, 1950.00, 1),
+(3, 3, 1980.00, 3),
+(4, 4, 95000.00, 1),
+(4, 13, 115000.00, 1),
+(5, 1, 34400.00, 4),
+(5, 6, 36000.00, 1),
+(6, 7, 26000.00, 2),
+(7, 2, 19500.00, 1),
+(8, 8, 2500.00, 3),
+(9, 9, 25000.00, 1),
+(10, 10, 25550.00, 2),
+(10, 15, 81704.00, 1),
+(11, 2, 20000.00, 2),
+(11, 5, 6224.00, 4),
+(11, 6, 7100.00, 3),
+(12, 15, 81704.00, 1),
+(13, 12, 140000.00, 1),
+(14, 15, 82000.00, 3),
+(15, 14, 850.00, 5),
+(16, 1, 36000.00, 2),
+(16, 5, 6400.00, 1),
+(16, 6, 7500.00, 3),
+(17, 4, 98000.00, 1),
+(17, 8, 2700.00, 4),
+(17, 14, 850.00, 7),
+(18, 3, 2100.00, 5),
+(18, 7, 30000.00, 1),
+(19, 5, 7500.00, 2),
+(19, 15, 83000.00, 1),
+(20, 16, 16000.00, 1);
+
+/* Tabla ORDENES_DE_COMPRA*/
+
+INSERT INTO petshop_ecommerce.ORDENES_DE_COMPRA(id_usuario,id_metodo_pago,fecha_de_orden) VALUES
+(1,1,'2024-04-13 10:00:00'),
+(2,1,'2024-04-15 12:00:00'),
+(3,2,'2024-04-21 13:00:00'),
+(1,4,'2024-04-28 17:00:00'),
+(4,2,'2024-04-30 09:00:00'),
+(5,3,'2024-05-03 10:00:00'),
+(6,1,'2024-05-07 12:00:00'),
+(2,3,'2024-05-13 09:00:00'),
+(5,4,'2024-05-14 15:00:00'),
+(4,1,'2024-05-15 14:00:00'),
+(7,5,'2024-05-15 13:00:00'),
+(3,1,'2024-05-21 16:00:00'),
+(10,1,'2024-05-24 10:00:00'),
+(9,2,'2024-05-25 11:00:00'),
+(8,2,'2024-06-01 12:00:00'),
+(11,3,'2024-06-03 17:00:00'),
+(1,3,'2024-06-16 14:00:00'),
+(12,3,'2024-06-21 10:00:00'),
+(13,1,'2024-07-05 15:00:00'),
+(14,2,'2024-07-06 16:00:00'),
+(15,2,'2024-07-17 11:00:00');
+
+/* Tabla DETALLE_DE_ORDEN*/
+
+INSERT INTO petshop_ecommerce.DETALLE_DE_ORDEN(id_orden, id_producto, precio_final, cantidad)VALUES 
+(1,1,34400,1),
+(1,5,6240,3),
+(2,2,19500,1),
+(2,3,1870,2),
+(3,4,95000,1),
+(4,5,6230,3),
+(5,14,650,1),
+(6,2,19500,1),
+(6,3,1870,5),
+(7,1,34400,1),
+(8,8,2500,1),
+(9,11,2500,1),
+(10,9,25000,1),
+(10,10,25500,1),
+(11,12,136000,1),
+(12,2,19500,1),
+(13,3,1870,3),
+(14,13,115000,1),
+(14,14,650,2),
+(15,14,650,5),
+(16,15,81705,1),
+(17,11,2500,1),
+(18,12,136000,1),
+(19,16,150000,1),
+(20,4,95000,1);
