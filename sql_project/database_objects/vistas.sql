@@ -36,3 +36,10 @@ CREATE OR REPLACE VIEW FechaUltimaCompraDeCadaUsuario AS
 	FROM USUARIOS AS u
 	JOIN ORDENES_DE_COMPRA AS o ON(u.id_usuario=o.id_usuario)
 	GROUP BY  u.id_usuario, u.nombre_de_usuario, u.email;
+    
+CREATE OR REPLACE VIEW VisualizacionDeSubcategorias AS
+	SELECT sub.id_subcategoria, sub.nombre as 'Subcategoria', cat.nombre as 'Categoria', a.nombre as 'Animal'
+    FROM SUBCATEGORIAS as sub
+    JOIN CATEGORIAS as cat ON (sub.id_categoria = cat.id_categoria)
+    JOIN ANIMALES as a ON (cat.id_animal = a.id_animal);
+SELECT * FROM VisualizacionDeSubcategorias;
