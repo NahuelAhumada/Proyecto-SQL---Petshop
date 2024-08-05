@@ -42,4 +42,3 @@ CREATE OR REPLACE VIEW VisualizacionDeSubcategorias AS
     FROM SUBCATEGORIAS as sub
     JOIN CATEGORIAS as cat ON (sub.id_categoria = cat.id_categoria)
     JOIN ANIMALES as a ON (cat.id_animal = a.id_animal);
-SELECT * FROM VisualizacionDeSubcategorias;
