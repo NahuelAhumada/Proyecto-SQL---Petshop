@@ -9,7 +9,9 @@ BEGIN
     WHERE id_carrito IN
 		(SELECT c.id_carrito FROM CARRITOS as C
         WHERE c.fecha_interaccion<= date_sub(now(), INTERVAL 2 DAY)); 
-
+	UPDATE CARRITOS
+    SET fecha_interaccion = now()
+    WHERE fecha_interaccion<= date_sub(now(), INTERVAL 2 DAY); 
 END //
 DELIMITER ;
 
