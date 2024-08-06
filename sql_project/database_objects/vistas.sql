@@ -42,3 +42,11 @@ CREATE OR REPLACE VIEW VisualizacionDeSubcategorias AS
     FROM SUBCATEGORIAS as sub
     JOIN CATEGORIAS as cat ON (sub.id_categoria = cat.id_categoria)
     JOIN ANIMALES as a ON (cat.id_animal = a.id_animal);
+CREATE OR REPLACE VIEW  UsuariosQueNoCompraronEn3Meses AS
+	SELECT u.nombre_de_usuario, u.email
+    FROM USUARIOS AS u
+    WHERE u.id_usuario NOT IN(
+		SELECT o.id_usuario
+        FROM ORDENES_DE_COMPRA
+        WHERE fecha_de_orden >= DATE_SUB(NOW(), INTERVAL 3 MONTH)
+    );
