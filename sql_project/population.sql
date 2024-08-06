@@ -92,9 +92,9 @@ LOAD DATA LOCAL INFILE '/sql_project/data_csv/usuarios.csv'
     IGNORE 1 LINES
     (nombre_de_usuario,nombres,apellidos, email, contrasena);
 
-/* Tabla Direcciones*/ 
-LOAD DATA LOCAL INFILE '/sql_project/data_csv/direcciones.csv'
-	INTO TABLE DIRECCIONES
+/* Tabla Direcciones de envio*/ 
+LOAD DATA LOCAL INFILE '/sql_project/data_csv/direcciones_de_envio.csv'
+	INTO TABLE DIRECCIONES_DE_ENVIO
     FIELDS TERMINATED BY ',' ENCLOSED BY '"'
     LINES TERMINATED BY '\r\n'
     IGNORE 1 LINES
