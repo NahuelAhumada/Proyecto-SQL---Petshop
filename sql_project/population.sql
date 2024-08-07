@@ -37,7 +37,7 @@ VALUES
     ('Accesorios',5);
 
 /*Tabla subcategorias*/
-LOAD DATA LOCAL INFILE   '/sql_project/data_csv/subcategorias.csv'
+LOAD DATA LOCAL INFILE   'F:/Programacion/CODERHOUSE/Proyecto/Primera_Entrega/Proyecto-SQL---Petshop/sql_project/data_csv/subcategorias.csv'
     INTO TABLE petshop_ecommerce.SUBCATEGORIAS
     FIELDS TERMINATED BY ',' ENCLOSED BY '"'
     LINES TERMINATED BY '\r\n'
@@ -68,12 +68,12 @@ VALUES
     ('Tetra','1196354869');
 
 /* Tabla Productos*/
-LOAD DATA LOCAL INFILE   '/sql_project/data_csv/productos.csv'
+LOAD DATA LOCAL INFILE   'F:/Programacion/CODERHOUSE/Proyecto/Primera_Entrega/Proyecto-SQL---Petshop/sql_project/data_csv/productos.csv'
 	INTO TABLE PRODUCTOS
     FIELDS TERMINATED BY ',' ENCLOSED BY '"'
     LINES TERMINATED BY '\r\n'
     IGNORE 1 LINES
-    (nombre, descripción,precio,imagen,cantidad_disponible,estado,id_subcategoria,id_marca);
+    (nombre, descripcion,precio,imagen,cantidad_disponible,estado,id_subcategoria,id_marca);
 /* Tabla Metodos de Pago*/
 
 INSERT INTO petshop_ecommerce.METODOS_DE_PAGO
@@ -85,7 +85,7 @@ VALUES
     ('Credito a una cuota'),
     ('Credito a tres cuotas');
 /* Tabla Usuarios*/
-LOAD DATA LOCAL INFILE '/sql_project/data_csv/usuarios.csv'
+LOAD DATA LOCAL INFILE 'F:/Programacion/CODERHOUSE/Proyecto/Primera_Entrega/Proyecto-SQL---Petshop/sql_project/data_csv/usuarios.csv'
 	INTO TABLE USUARIOS
     FIELDS TERMINATED BY ',' ENCLOSED BY '"'
     LINES TERMINATED BY '\r\n'
@@ -93,7 +93,7 @@ LOAD DATA LOCAL INFILE '/sql_project/data_csv/usuarios.csv'
     (nombre_de_usuario,nombres,apellidos, email, contrasena);
 
 /* Tabla Direcciones de envio*/ 
-LOAD DATA LOCAL INFILE '/sql_project/data_csv/direcciones_de_envio.csv'
+LOAD DATA LOCAL INFILE 'F:/Programacion/CODERHOUSE/Proyecto/Primera_Entrega/Proyecto-SQL---Petshop/sql_project/data_csv/direcciones_de_envio.csv'
 	INTO TABLE DIRECCIONES_DE_ENVIO
     FIELDS TERMINATED BY ',' ENCLOSED BY '"'
     LINES TERMINATED BY '\r\n'
