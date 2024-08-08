@@ -77,12 +77,10 @@ En mi version de MYSQL WORKBENCH 8.0 generó un error y tuve que cambiarlo de la
 
 ![DRM](images/Petshop.png)
 
+---
 ### Insercion
 Los datos para cada tabla se obtienen al correr el archivo  'population.sql' por medio de multiples INSERT INTO
 
-<<<<<<< HEAD
-### Vistas
-=======
 ```sql
 LOAD DATA LOCAL INFILE   '/sql_project/data_csv/subcategorias.csv'
     INTO TABLE petshop_ecommerce.SUBCATEGORIAS
@@ -134,6 +132,7 @@ Para las demas tablas, se insertaron datos mediante el comando DML INSERT INTO. 
 **Retorno:**
 * VARCHAR: Monto total del carrito de compra, anteponiendo el caracter '$'.
 
+---
 
 ## Vistas
 >>>>>>> b08f1d3848029177d095827f1fe8ceafbaacc6ca
