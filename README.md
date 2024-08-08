@@ -79,6 +79,7 @@ En mi version de MYSQL WORKBENCH 8.0 generó un error y tuve que cambiarlo de la
 
 ### Insercion
 Para las tablas DIRECCIONES_DE_ENVIO, PRODUCTOS, SUBCATEGORIAS Y USUARIOS se crearon archivos .csv para importar los datos en las tablas, alojados en la carpeta '/sql_project/data_csv'. 
+
 ```sql
 LOAD DATA LOCAL INFILE   '/sql_project/data_csv/subcategorias.csv'
     INTO TABLE petshop_ecommerce.SUBCATEGORIAS
@@ -87,7 +88,10 @@ LOAD DATA LOCAL INFILE   '/sql_project/data_csv/subcategorias.csv'
     IGNORE 1 LINES
     (nombre,id_categoria);
 ```
-**NOTAS:** Si el proyecto se corre de manera local, requerirá colocar la ruta completa de los archivos. Los archivos csv fueron creados en windows; en el caso de que cuente con archivos creados en linux, se debe modificar la siguiente linea:
+
+**NOTAS:**
+Si el proyecto se corre de manera local, requerirá colocar la ruta completa de los archivos. Los archivos csv fueron creados en windows; en el caso de que cuente con archivos creados en linux, se debe modificar la siguiente linea:
+
 ```sql
 LINES TERMINATED BY '\n'
 ```
@@ -95,6 +99,35 @@ Para las demas tablas, se insertaron datos mediante el comando DML INSERT INTO. 
 
 ## Funciones
 
+### Funcion id_ultima_orden_de_compra_de_usuario:
+
+**Descripción:** Esta función retorna el id de la ultima compra que haya realizado un usuario. En vista de que una orden de compra puede presentar error al insertar datos (por ejemplo, insertar una cantidad o precio erroneo), se considera de utilidad tener disposicion una función que acceda a la ultima compra de un usuario para realizar correcciones.
+
+**Parámetros:**
+* **var_id_usuario** : Identificador único de cada usuario.
+
+**Retorno:**
+* INT: Identificador único de la ultima orden de compra realizada por un usuario.
+
+### Funcion calcular_precio_total_de_orden:
+
+**Descripción:** Esta función retorna el precio total de una determinada orden de compra. Calcular este valor es de gran utlidad a la hora de mostrar los datos de una o más ordenes de compra
+
+**Parámetros:**
+* **var_id_orden** : Identificador único de cada orden de compra.
+
+**Retorno:**
+* VARCHAR: Monto total de la orden de compra, anteponiendo el caracter '$'.
+
+### Funcion calcular_precio_total_de_carrito:
+
+**Descripción:** Esta función retorna el precio total de una determinada orden de carrito. Calcular este valor es de gran utlidad a la hora de mostrar los datos de un carrito de compra relacionado a un usuario
+
+**Parámetros:**
+* **var_id_carrito** : Identificador único de cada carrito de compra.
+
+**Retorno:**
+* VARCHAR: Monto total del carrito de compra, anteponiendo el caracter '$'.
 
 
 ## Vistas
