@@ -135,7 +135,6 @@ Para las demas tablas, se insertaron datos mediante el comando DML INSERT INTO. 
 ---
 
 ## Vistas
->>>>>>> b08f1d3848029177d095827f1fe8ceafbaacc6ca
 
 Se consideró de utilidad tener a disponición las siguientes vista:
 ### 1. TotalAPagarPorCarrito:
