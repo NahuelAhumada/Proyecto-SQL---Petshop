@@ -27,7 +27,7 @@ En mi version de MYSQL WORKBENCH 8.0 generó un error y tuve que cambiarlo de la
   - Almacena los datos de cada usuario registrado en el ecommerce
   - Atributos: id_usuario, nombre_de_usuario, nombres, apellidos,email, contresena
     
-2. **DIRECCIONES**
+2. **DIRECCIONES_DE_ENVIO**
   - Cada usuario tiene la posibilidad de tener más una dirección y, en ciertos casos, más de un usuario puede tener la misma dirección. Por lo tanto se utiliza una tabla de direcciones relacionadas a usuarios
   - Atributos: id_direccion, calle, piso, localidad, provincia, pais, codigo_postal
 
@@ -78,15 +78,32 @@ En mi version de MYSQL WORKBENCH 8.0 generó un error y tuve que cambiarlo de la
 ![DRM](images/Petshop.png)
 
 ### Insercion
-Los datos para cada tabla se obtienen al correr el archivo  'population.sql' por medio de multiples INSERT INTO
+Para las tablas DIRECCIONES_DE_ENVIO, PRODUCTOS, SUBCATEGORIAS Y USUARIOS se crearon archivos .csv para importar los datos en las tablas, alojados en la carpeta '/sql_project/data_csv'. 
+```sql
+LOAD DATA LOCAL INFILE   '/sql_project/data_csv/subcategorias.csv'
+    INTO TABLE petshop_ecommerce.SUBCATEGORIAS
+    FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+    LINES TERMINATED BY '\r\n'
+    IGNORE 1 LINES
+    (nombre,id_categoria);
+```
+**NOTAS:** Si el proyecto se corre de manera local, requerirá colocar la ruta completa de los archivos. Los archivos csv fueron creados en windows; en el caso de que cuente con archivos creados en linux, se debe modificar la siguiente linea:
+```sql
+LINES TERMINATED BY '\n'
+```
+Para las demas tablas, se insertaron datos mediante el comando DML INSERT INTO. Hay que considerar que el caso de las tablas PRODUCTOS y SUBCATEGORIAS, al contener FOREIGN KEY's, primero se deben haber insertado datos previos en las Tablas ANIMALES y CATEGORIAS. Para garantizar que la inserción de datos se ejecute de forma ordena, el codigo referente a esta accion esta contenido en un solo archivo: /sql_project/population.sql
 
-### Vistas
+## Funciones
+
+
+
+## Vistas
 
 Se consideró de utilidad tener a disponición las siguientes vista:
 1. TotalAPagarPorCarrito: Almacena una query que permite visualizar el precio de cada carrito de compra activo con el fin de tener a consideración las posibles ventas
 2. DiezProductosMasComprados: Permite mostrar los 10 productos más vendidos historicamente
 
-### STORED PROCEDURES
+## STORED PROCEDURES
 
 1. revision_carritos():
   Mediante este procedimiento se buscar automatizar el limpiado de aquellos carritos de compra que llevan abierto por más de 2 dos días. Si bien esta implementado como un STORED PROCEDURE, podría implementarse tambien como un EVENTO.
@@ -101,7 +118,8 @@ DELETE FROM ITEM_CARRITO
 2. realizar_compra(IN var_id_carrito INT, IN var_id_metodo_pago INT)
    Por medio de este procedimiento, una vez que sa validen los datos ingresados, se genera una nueva orden de compra correspondiendo al usuario dueño del carrito. Luego de esto, los datos de cada producto relacionado al carrito, pasan a ser relacionado a la orden de compra generada ingresandolos en la tabla DETALLE_ORDEN. Una vez hecho esto, se vacia el carrito de compra correspodiente al id_carrito que se pasó por parametro.
 
-###Triggers
+## Triggers
+
 1. validar_productos_al_insertar()
 2. validar_producto_al_actualizar
 3. crear_carrito_para_usuario
