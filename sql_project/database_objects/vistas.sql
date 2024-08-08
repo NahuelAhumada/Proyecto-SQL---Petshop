@@ -11,13 +11,15 @@ CREATE OR REPLACE VIEW
         GROUP BY us.id_usuario, us.nombre_de_usuario;
 
 CREATE OR REPLACE VIEW
-	DiezProductosMasComprados
+	CantidadCompradaDeProductos
     AS
-		SELECT id_producto, SUM(cantidad) AS Total_Comprado
-        FROM DETALLE_DE_ORDEN
-        GROUP BY id_producto
-        ORDER BY Total_Comprado DESC
-        LIMIT 10;
+		SELECT calculo.id_producto, p.nombre,  calculo.Cantidad_Comprada
+        FROM (SELECT id_producto, SUM(cantidad) AS Total_Comprado
+			FROM DETALLE_DE_ORDEN
+			GROUP BY id_producto) as calculo
+		JOIN PRODUCTOS as p
+        ON (calculo.id_producto = p.id_producto);
+
 CREATE OR REPLACE VIEW ProductosVendidoPorPrecioFinal AS
 	SELECT
     o.fecha_de_orden,
@@ -43,6 +45,7 @@ CREATE OR REPLACE VIEW VisualizacionDeSubcategorias AS
     FROM SUBCATEGORIAS as sub
     JOIN CATEGORIAS as cat ON (sub.id_categoria = cat.id_categoria)
     JOIN ANIMALES as a ON (cat.id_animal = a.id_animal);
+
 CREATE OR REPLACE VIEW  UsuariosQueNoCompraronEn3Meses AS
 	SELECT u.nombre_de_usuario, u.email
     FROM USUARIOS AS u
