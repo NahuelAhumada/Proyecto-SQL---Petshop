@@ -35,7 +35,7 @@ CREATE OR REPLACE VIEW ProductosVendidoPorPrecioFinal AS
     ORDER by o.fecha_de_orden DESC;
 
 CREATE OR REPLACE VIEW FechaUltimaCompraDeCadaUsuario AS
-	SELECT u.id_usuario, o.id_orden ,u.nombre_de_usuario, u.email, MAX(o.fecha_de_orden) as 'Ultima fechas de compra' 
+	SELECT u.id_usuario, u.nombre_de_usuario, u.email, MAX(o.fecha_de_orden) as 'Ultima fechas de compra' 
 	FROM USUARIOS AS u
 	JOIN ORDENES_DE_COMPRA AS o ON(u.id_usuario=o.id_usuario)
 	GROUP BY  u.id_usuario, u.nombre_de_usuario, u.email;
