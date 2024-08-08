@@ -2,12 +2,13 @@ USE petshop_ecommerce;
 CREATE OR REPLACE VIEW 
 	TotalAPagarPorCarrito
 	AS 
-		SELECT us.nombre_de_usuario,
-			SUM(items.precio_final * items.cantidad ) AS total_a_pagar
-		FROM ITEM_CARRITO as items
-        INNER JOIN CARRITOS as cart ON (cart.id_carrito=items.id_carrito)
+		SELECT
+			us.id_usuario,
+			us.nombre_de_usuario,
+			calcular_precio_total_de_carrito(cart.id_carrito) AS total_a_pagar
+		FROM CARRITOS AS cart
         INNER JOIN USUARIOS as us ON (us.id_usuario=cart.id_usuario)
-        GROUP BY us.nombre_de_usuario;
+        GROUP BY us.id_usuario, us.nombre_de_usuario;
 
 CREATE OR REPLACE VIEW
 	DiezProductosMasComprados
