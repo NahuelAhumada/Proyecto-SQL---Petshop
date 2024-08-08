@@ -15,6 +15,9 @@ BEGIN
 		SELECT MAX(fecha_de_orden)
         FROM ORDENES_DE_COMPRA
         WHERE id_usuario = var_id_usuario);
+	IF ultimo_id IS NULL THEN
+		SIGNAL SQLSTATE '02000' SET MESSAGE_TEXT = 'No hay orden asociada a este usuario', MYSQL_ERRNO = 1000;
+    END IF;
     RETURN ultimo_id;
 END //
 DELIMITER ;
@@ -31,6 +34,9 @@ BEGIN
     INTO resultado_operacion
     FROM DETALLE_DE_ORDEN
     WHERE id_orden = var_id_orden;
+    IF resultado_operacion IS NULL THEN
+		SIGNAL SQLSTATE '02000' SET MESSAGE_TEXT = 'ID de ORDEN invalida', MYSQL_ERRNO = 1000;
+    END IF;
 	SET resultado_concatenado = CONCAT("$",CAST(resultado_operacion AS CHAR(13)));
     RETURN resultado_concatenado;
 END //
@@ -48,6 +54,9 @@ BEGIN
     INTO resultado_operacion
     FROM ITEM_CARRITO
     WHERE id_carrito = var_id_carrito;
+    IF resultado_operacion IS NULL THEN
+		SIGNAL SQLSTATE '02000' SET MESSAGE_TEXT = 'No hay productos para este carrito', MYSQL_ERRNO = 1000;
+    END IF;
 	SET resultado_concatenado = CONCAT("$",CAST(resultado_operacion AS CHAR(13)));
     RETURN resultado_concatenado;
 END //
