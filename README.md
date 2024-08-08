@@ -97,6 +97,8 @@ LINES TERMINATED BY '\n'
 ```
 Para las demas tablas, se insertaron datos mediante el comando DML INSERT INTO. Hay que considerar que el caso de las tablas PRODUCTOS y SUBCATEGORIAS, al contener FOREIGN KEY's, primero se deben haber insertado datos previos en las Tablas ANIMALES y CATEGORIAS. Para garantizar que la inserción de datos se ejecute de forma ordena, el codigo referente a esta accion esta contenido en un solo archivo: /sql_project/population.sql
 
+---
+
 ## Funciones
 
 ### Funcion id_ultima_orden_de_compra_de_usuario:
