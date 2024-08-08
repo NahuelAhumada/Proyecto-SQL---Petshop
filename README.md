@@ -133,8 +133,16 @@ Para las demas tablas, se insertaron datos mediante el comando DML INSERT INTO. 
 ## Vistas
 
 Se consideró de utilidad tener a disponición las siguientes vista:
-1. TotalAPagarPorCarrito: Almacena una query que permite visualizar el precio de cada carrito de compra activo con el fin de tener a consideración las posibles ventas
-2. DiezProductosMasComprados: Permite mostrar los 10 productos más vendidos historicamente
+### 1. TotalAPagarPorCarrito:
+
+Almacena una query que permite visualizar el precio de cada carrito de compra activo con el fin de tener a consideración las posibles ventas que se vayan a realizar
+**Columnas:**
+* id_usuario: Identificador único del usuario
+* nombre_de_usuario: Nombre único con el que se puede identificar a un usuario
+* total_a_pagar: Función creada previamente para calcular y mostrar el monto total acumulado de los items de cada carrito.
+  
+### 2. DiezProductosMasComprados: Permite mostrar los 10 productos más vendidos historicamente
+**Columnas:**
 
 ## STORED PROCEDURES
 
