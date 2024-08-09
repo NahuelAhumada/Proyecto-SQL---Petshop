@@ -137,16 +137,62 @@ Para las demas tablas, se insertaron datos mediante el comando DML INSERT INTO. 
 ## Vistas
 
 Se consideró de utilidad tener a disponición las siguientes vista:
+
 ### 1. TotalAPagarPorCarrito:
 
 Almacena una query que permite visualizar el precio de cada carrito de compra activo con el fin de tener a consideración las posibles ventas que se vayan a realizar
+
 **Columnas:**
 * id_usuario: Identificador único del usuario
 * nombre_de_usuario: Nombre único con el que se puede identificar a un usuario
 * total_a_pagar: Función creada previamente para calcular y mostrar el monto total acumulado de los items de cada carrito.
   
-### 2. DiezProductosMasComprados: Permite mostrar los 10 productos más vendidos historicamente
+### 2. CantidadCompradaDeProductos: 
+
+Permite ver la cantidad de Producto que se han vendido historicamente
+
 **Columnas:**
+* id_producto: Identificador único de cada producto
+* nombre: Nombre de los productos que han sido comprados
+* Cantidad_Comprada: Cantidad de productos que han sido comprados
+  
+### 3. ProductosVendidoPorPrecioFinal
+
+Visualiza historicamente a que precio ha sido vendido cada producto. Debido a que el campo precio de la tabla PRODUCTO es meramente de referencia para no afectar a la tabla DETALLE_DE_ORDEN, es de utlidad revisar a que precios se han vendido los productos.
+
+**Columnas:**
+* id_orden: Identificador unico de cada orden de compra
+* fecha_de_orden: Fecha en la que se vendio uno o más productos
+* id_producto: Identificador unico de cada producto
+* nombre_de_producto: Nombre de referencia de un producto
+* Precio de venta: Precio al que se vendio un producto en una fecha y hora determinada
+* Cantidad: Cantidad de un producto vendido en una fecha y hora determinada
+  
+### 4. FechaUltimaCompraDeCadaUsuario
+
+Visualiza la ultima fecha en la que cada usuario realizó una compra
+
+**Columnas:**
+* id_usuario: Identificador único de cada usuario
+* nombre_de_usuario: Nombre único con el que se puede identificar a un usuario
+* email: Mail con el que el usuario esta registrado
+* Ultima fecha de compra: Resultado de analizar la ultima fecha de compra, haciendo uso de la función MAX() y GROUP BY
+
+### 5. VisualizacionDeSubcategorias
+
+**Columnas:**
+* id_subcategoria: Identificador único de cada subcategoria
+* Subcategoria: 
+* Categoria
+* Animal
+
+### 6. UsuariosQueNoCompraronEn3Meses
+
+**Columnas:**
+* nombre_de_usuario
+* email
+
+---
 
 ### STORED PROCEDURES
 
