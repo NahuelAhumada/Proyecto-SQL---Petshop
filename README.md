@@ -181,10 +181,10 @@ Visualiza la ultima fecha en la que cada usuario realizó una compra
 ### 5. VisualizacionDeSubcategorias
 
 **Columnas:**
-* id_subcategoria: Identificador único de cada subcategoria
-* Subcategoria: 
-* Categoria
-* Animal
+* id_subcategoria: Identificador único de cada subcategoría
+* Subcategoria: Nombre de la subcategoría selecionada
+* Categoria: Nombre de la categoria principal a la que de pertence la subcategoría
+* Animal: Nombre del tipo de animal al que pertence la categoría
 
 ### 6. UsuariosQueNoCompraronEn3Meses
 
