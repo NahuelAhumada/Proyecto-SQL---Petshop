@@ -41,26 +41,6 @@ CREATE TABLE ITEM_CARRITO (
     PRIMARY KEY (id_carrito, id_producto)
 );
 
-CREATE TABLE ORDENES_DE_COMPRA (
-	id_orden int PRIMARY KEY AUTO_INCREMENT,
-    id_usuario int NOT NULL,
-    id_metodo_pago int NOT NULL,
-    fecha_de_orden datetime NOT NULL DEFAULT(now())
-);
-
-CREATE TABLE DETALLE_DE_ORDEN (
-	id_orden int NOT NULL,
-	id_producto int NOT NULL,
-    precio_final decimal(10, 2),
-	cantidad int NOT NULL,
-    PRIMARY KEY (id_orden, id_producto)
-);
-
-CREATE TABLE METODOS_DE_PAGO(
-	id_metodo_pago int PRIMARY KEY AUTO_INCREMENT,
-    nombre varchar(35)
-);
-
 CREATE TABLE PRODUCTOS (
 	id_producto int PRIMARY KEY AUTO_INCREMENT,
 	nombre varchar(100) NOT NULL,
@@ -96,6 +76,42 @@ CREATE TABLE ANIMALES (
     nombre varchar(60) NOT NULL
 );
 
+CREATE TABLE ORDENES_DE_COMPRA (
+	id_orden int PRIMARY KEY AUTO_INCREMENT,
+    id_usuario int NOT NULL,
+    estado enum('pendiente', 'pagado', 'cancelado') DEFAULT 'pendiente',
+    fecha_de_orden datetime NOT NULL DEFAULT(now())
+);
+
+CREATE TABLE DETALLE_DE_ORDEN (
+	id_orden int NOT NULL,
+	id_producto int NOT NULL,
+    precio_final decimal(10, 2),
+	cantidad int NOT NULL,
+    PRIMARY KEY (id_orden, id_producto)
+);
+
+CREATE TABLE METODOS_DE_PAGO(
+	id_metodo_pago int PRIMARY KEY AUTO_INCREMENT,
+    nombre varchar(35)
+);
+CREATE TABLE PAGOS (
+    id_pago int PRIMARY KEY AUTO_INCREMENT,
+    id_orden int NOT NULL,
+    id_metodo_pago int NOT NULL,
+    estado enum('pendiente','completado'),
+    fecha_pago datetime NOT NULL DEFAULT(now()),
+    monto decimal(12, 2) NOT NULL  
+);
+CREATE TABLE DESPACHO_DE_PEDIDOS(
+	id_despacho int PRIMARY KEY AUTO_INCREMENT,
+    id_orden int NOT NULL,
+    id_direccion int, -- Puede ser NULL si es retiro en local
+    fecha_de_despacho datetime NOT NULL DEFAULT(now()),
+    detalle varchar(50),
+    estado_envio enum('pendiente', 'enviado', 'entregado', 'cancelado') DEFAULT 'pendiente',
+    retiro_en_local BOOLEAN DEFAULT FALSE
+);
 -- Claves foraneas
 ALTER TABLE USUARIOS_DIRECCIONES ADD FOREIGN KEY (id_usuario) REFERENCES USUARIOS (id_usuario)
 ON UPDATE CASCADE
@@ -123,11 +139,16 @@ ON UPDATE CASCADE;
 ALTER TABLE CATEGORIAS ADD FOREIGN KEY (id_animal) REFERENCES ANIMALES (id_animal)
 ON UPDATE CASCADE;
 
-
 ALTER TABLE DETALLE_DE_ORDEN ADD FOREIGN KEY (id_orden) REFERENCES ORDENES_DE_COMPRA (id_orden);
 
 ALTER TABLE DETALLE_DE_ORDEN ADD FOREIGN KEY (id_producto) REFERENCES PRODUCTOS (id_producto);
 
 ALTER TABLE ORDENES_DE_COMPRA ADD FOREIGN KEY (id_usuario) REFERENCES USUARIOS (id_usuario);
 
-ALTER TABLE ORDENES_DE_COMPRA ADD FOREIGN KEY (id_metodo_pago) REFERENCES METODOS_DE_PAGO (id_metodo_pago);
+ALTER TABLE PAGOS ADD FOREIGN KEY (id_orden) REFERENCES ORDENES_DE_COMPRA (id_orden);
+
+ALTER TABLE PAGOS ADD FOREIGN KEY (id_metodo_pago) REFERENCES METODOS_DE_PAGO (id_metodo_pago);
+
+ALTER TABLE DESPACHO_DE_PEDIDOS ADD FOREIGN KEY (id_orden) REFERENCES ORDENES_DE_COMPRA (id_orden);
+
+ALTER TABLE DESPACHO_DE_PEDIDOS ADD FOREIGN KEY (id_direccion) REFERENCES DIRECCIONES_DE_ENVIO (id_direccion);
