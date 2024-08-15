@@ -45,7 +45,7 @@ CREATE TABLE PRODUCTOS (
 	id_producto int PRIMARY KEY AUTO_INCREMENT,
 	nombre varchar(100) NOT NULL,
 	descripcion varchar(350) NOT NULL,
-    precio decimal(10, 2),
+    precio decimal(10, 2), -- Precio de lista
 	imagen varchar(100),
     cantidad_disponible int DEFAULT 1,
     estado enum ('publicado','borrador','no disponible') DEFAULT 'borrador',
@@ -101,7 +101,7 @@ CREATE TABLE PAGOS (
     id_metodo_pago int NOT NULL,
     estado enum('pendiente','completado'),
     fecha_pago datetime NOT NULL DEFAULT(now()),
-    monto decimal(12, 2) NOT NULL  
+    monto decimal(15, 2) NOT NULL  
 );
 CREATE TABLE DESPACHO_DE_PEDIDOS(
 	id_despacho int PRIMARY KEY AUTO_INCREMENT,
