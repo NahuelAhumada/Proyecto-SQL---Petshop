@@ -28,7 +28,7 @@ CREATE OR REPLACE VIEW
     CONCAT('$ ', CAST(d.precio_final AS CHAR(13))) AS 'Precio de venta',
     d.cantidad
     FROM
-    Productos as P
+    PRODUCTOS as P
     JOIN DETALLE_DE_ORDEN AS d ON (p.id_producto = d.id_producto)
 	JOIN ORDENES_DE_COMPRA AS o ON(d.id_orden = o.id_orden);
 
