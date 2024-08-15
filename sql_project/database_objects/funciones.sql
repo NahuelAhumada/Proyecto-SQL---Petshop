@@ -2,10 +2,10 @@ USE petshop_ecommerce;
 
 
 # Funcion para visualizar precio como un varchar, anteponiendo el caracter $
-DROP FUNCTION IF EXISTS pasar_precio_a_varchar;
+DROP FUNCTION IF EXISTS mostrar_precio;
 
 DELIMITER //
-CREATE FUNCTION pasar_precio_a_varchar(var_precio DECIMAL(15,2)) RETURNS VARCHAR(18)
+CREATE FUNCTION mostrar_precio(var_precio DECIMAL(15,2)) RETURNS VARCHAR(18)
 DETERMINISTIC
 NO SQL
 BEGIN
@@ -55,7 +55,7 @@ BEGIN
 END //
 DELIMITER ;
 
-
+#Funcion para calcular el total a pagar de una orden de compra
 DROP FUNCTION IF EXISTS calcular_precio_total_de_orden;
 DELIMITER //
 CREATE FUNCTION calcular_precio_total_de_orden(var_id_orden INT) RETURNS VARCHAR(18)
