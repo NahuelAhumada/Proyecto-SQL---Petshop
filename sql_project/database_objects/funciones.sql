@@ -34,7 +34,7 @@ BEGIN
 END //
 DELIMITER ;
 
-
+# Funcion para devolver el id de la ultima compra realizada por un determinado usuario
 DROP FUNCTION IF EXISTS id_ultima_orden_de_compra_de_usuario;
 DELIMITER //
 CREATE FUNCTION id_ultima_orden_de_compra_de_usuario(var_id_usuario INT) RETURNS INT
@@ -76,6 +76,7 @@ BEGIN
 END //
 DELIMITER ;
 
+#Funcion para calcular el precio total a pagar de un determinado carrito de compra
 DROP FUNCTION IF EXISTS calcular_precio_total_de_carrito;
 DELIMITER //
 CREATE FUNCTION calcular_precio_total_de_carrito(var_id_carrito INT) RETURNS VARCHAR(18)
@@ -84,7 +85,7 @@ READS SQL DATA
 BEGIN
 	DECLARE resultado_operacion DECIMAL(15,2);
     DECLARE resultado_concatenado VARCHAR(18);
-    SELECT SUM(p.precio_final * i.cantidad) 
+    SELECT SUM(p.precio * i.cantidad) 
     INTO resultado_operacion
     FROM ITEM_CARRITO as i
     JOIN  PRODUCTOS as p
