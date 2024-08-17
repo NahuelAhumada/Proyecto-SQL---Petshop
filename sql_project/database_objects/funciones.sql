@@ -42,14 +42,15 @@ DETERMINISTIC
 READS SQL DATA
 BEGIN
 	DECLARE ultimo_id INT;
-    SELECT max.id_orden
+    
+    SELECT m.id_orden
     INTO ultimo_id
     FROM (SELECT id_orden, MAX(fecha_de_orden) as ultima_fecha
 		FROM ORDENES_DE_COMPRA
 		WHERE id_usuario = var_id_usuario
         GROUP BY id_orden
         ORDER BY ultima_fecha DESC
-        LIMIT 1) as max;
+        LIMIT 1) AS m;
 
     RETURN ultimo_id;
 END //
