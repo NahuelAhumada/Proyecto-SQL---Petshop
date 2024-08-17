@@ -11,7 +11,7 @@ CREATE TABLE USUARIOS (
 	apellidos varchar(80) NOT NULL,
 	email varchar(100) NOT NULL UNIQUE,
     contrasena varchar(60) NOT NULL
-);
+)COMMENT 'Tabla para almacenar información de los usuarios';
 
 CREATE TABLE DIRECCIONES_DE_ENVIO (
 	id_direccion int PRIMARY KEY AUTO_INCREMENT,
@@ -21,25 +21,25 @@ CREATE TABLE DIRECCIONES_DE_ENVIO (
     provincia varchar(60) NOT NULL,
     pais varchar(60) NOT NULL,
     codigo_postal varchar(20) NOT NULL
-);
+)COMMENT 'Tabla para almacenar los datos de cada direccion de envio registradas por los usuarios';
 
 CREATE TABLE USUARIOS_DIRECCIONES(
 	id_usuario int NOT NULL,
     id_direccion int NOT NULL
-);
+)COMMENT 'Tabla de relacion n-n entre los usuarios y las direcciones de envio';
 
 CREATE TABLE CARRITOS (
 	id_carrito int PRIMARY KEY AUTO_INCREMENT,
     id_usuario int UNIQUE NOT NULL,
     fecha_interaccion datetime NOT NULL DEFAULT(now())
-);
+)COMMENT 'Tabla de carrito de compra relacionado a cada usuario con la y hora de su ultima interaccion';
+
 CREATE TABLE ITEM_CARRITO (
     id_carrito int NOT NULL,
     id_producto int NOT NULL,
-    precio_final decimal(10, 2),
     cantidad int NOT NULL,
     PRIMARY KEY (id_carrito, id_producto)
-);
+)COMMENT 'Tabla de relacion CARRITOS - PRODUCTOS. Contiene el la cantidad de cada producto pedido en un determinado carrito de compra';
 
 CREATE TABLE PRODUCTOS (
 	id_producto int PRIMARY KEY AUTO_INCREMENT,
@@ -51,37 +51,37 @@ CREATE TABLE PRODUCTOS (
     estado enum ('publicado','borrador','no disponible') DEFAULT 'borrador',
 	id_subcategoria	 int NOT NULL,
     id_marca int
-);
+)COMMENT 'Tabla de productos del ecommerce. El precio almacenado se corresponde al precio de lista actual';
 
 CREATE TABLE MARCAS(
 	id_marca int PRIMARY KEY AUTO_INCREMENT,
     nombre varchar(60),
     contacto varchar(60)
-);
+) COMMENT 'Tabla de las marcas de cada producto';
 
 CREATE TABLE SUBCATEGORIAS (
 	id_subcategoria int PRIMARY KEY AUTO_INCREMENT,
 	nombre varchar(60) NOT NULL,
 	id_categoria int NOT NULL
-);
+)COMMENT 'Tabla de subcategorias disponibles de cada producto';
 
 CREATE TABLE CATEGORIAS (
 	id_categoria int PRIMARY KEY AUTO_INCREMENT,
 	nombre varchar(60)NOT NULL,
 	id_animal int NOT NULL
-);
+)COMMENT 'Tabla de categorias de los cuales dependen las subcategorias';
 
 CREATE TABLE ANIMALES (
 	id_animal int PRIMARY KEY AUTO_INCREMENT,
     nombre varchar(60) NOT NULL
-);
+)COMMENT 'Tabla de los animales ligados a las categorias de productos';
 
 CREATE TABLE ORDENES_DE_COMPRA (
 	id_orden int PRIMARY KEY AUTO_INCREMENT,
     id_usuario int NOT NULL,
     estado enum('pendiente', 'pagado', 'cancelado') DEFAULT 'pendiente',
     fecha_de_orden datetime NOT NULL DEFAULT(now())
-);
+)COMMENT 'Tabla de las ordenes de compra registradas historiamente, relacionada al usuario que la pidio';
 
 CREATE TABLE DETALLE_DE_ORDEN (
 	id_orden int NOT NULL,
@@ -89,29 +89,34 @@ CREATE TABLE DETALLE_DE_ORDEN (
     precio_final decimal(10, 2),
 	cantidad int NOT NULL,
     PRIMARY KEY (id_orden, id_producto)
-);
+)COMMENT 'Tabla de relacion n-n entre ordenes de compra y los productos correspondiente de cada compra';
 
 CREATE TABLE METODOS_DE_PAGO(
 	id_metodo_pago int PRIMARY KEY AUTO_INCREMENT,
     nombre varchar(35)
-);
+)COMMENT 'Tabla que almacena los metodos de pagos disponibles para cada compra';
+
 CREATE TABLE PAGOS (
     id_pago int PRIMARY KEY AUTO_INCREMENT,
-    id_orden int NOT NULL,
+    id_orden int NOT NULL UNIQUE,
     id_metodo_pago int NOT NULL,
-    estado enum('pendiente','completado'),
+    estado enum('pendiente','completado','cancelado') DEFAULT 'pendiente',
     fecha_pago datetime NOT NULL DEFAULT(now()),
-    monto decimal(15, 2) NOT NULL  
-);
+    monto decimal(15, 2) NOT NULL DEFAULT 0
+)COMMENT 'Tabla que registra los pagos de cada orden de compra';
+
 CREATE TABLE DESPACHO_DE_PEDIDOS(
 	id_despacho int PRIMARY KEY AUTO_INCREMENT,
     id_orden int NOT NULL,
     id_direccion int, -- Puede ser NULL si es retiro en local
-    fecha_de_despacho datetime NOT NULL DEFAULT(now()),
+    fecha_ultima_actualizacion datetime NOT NULL DEFAULT(now()),
     detalle varchar(50),
-    estado_envio enum('pendiente', 'enviado', 'entregado', 'cancelado') DEFAULT 'pendiente',
+    estado_envio enum('en local', 'enviado', 'entregado', 'cancelado') DEFAULT 'en local',
     retiro_en_local BOOLEAN DEFAULT FALSE
-);
+)COMMENT 'Tabla que registra la entrega de los pedidos. Pueden ser por envio o retiro del local';
+
+
+
 -- Claves foraneas
 ALTER TABLE USUARIOS_DIRECCIONES ADD FOREIGN KEY (id_usuario) REFERENCES USUARIOS (id_usuario)
 ON UPDATE CASCADE
