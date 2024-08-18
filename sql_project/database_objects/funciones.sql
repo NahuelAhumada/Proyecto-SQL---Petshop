@@ -20,16 +20,19 @@ CREATE FUNCTION calcular_precio_final(var_precio DECIMAL(15,2), var_id_metodo_de
 DETERMINISTIC
 NO SQL
 BEGIN
-	DECLARE precio_resultado DECIMAL (15,2);
-    SET precio_resultado = var_precio;
-	#Descuento 10% por pagar en efectivo
-	IF var_id_metodo_de_pago = 1 THEN
-		 SET precio_resultado = precio_resultado * 0.9;
-	#Aumento de 20% por pagar en 3 cuotas
-    ELSEIF var_id_metodo_de_pago = 5 THEN
-		SET precio_resultado = precio_resultado * 1.2;
+    DECLARE multiplicador DECIMAL (1,3);
+    
+    SELECT modifacion_precio
+    INTO multiplicador
+    FROM petshop_ecommerce.METODOS_DE_PAGO
+    WHERE id_metodo_pago = var_id_metodo_de_pago;
+    
+    IF multiplicador = NULL THEN
+		 SIGNAL SQLSTATE '02000' SET MESSAGE_TEXT = 'Metodo de pago invalido';
 	END IF;
-	RETURN precio_resultado;
+    
+    RETURN var_precio * multiplicador;
+
 END //
 DELIMITER ;
 
