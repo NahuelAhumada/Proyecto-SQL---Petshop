@@ -94,7 +94,7 @@ CREATE TABLE DETALLE_DE_ORDEN (
 CREATE TABLE METODOS_DE_PAGO(
 	id_metodo_pago int PRIMARY KEY AUTO_INCREMENT,
     nombre varchar(35),
-    modifacion_precio decimal (1,3)
+    modifacion_precio decimal (4,3)
 )COMMENT 'Tabla que almacena los metodos de pagos disponibles para cada compra';
 
 CREATE TABLE PAGOS (
