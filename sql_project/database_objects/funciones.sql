@@ -47,8 +47,8 @@ BEGIN
     FROM petshop_ecommerce.METODOS_DE_PAGO
     WHERE id_metodo_pago = var_id_metodo_de_pago;
     
-    IF multiplicador = NULL THEN
-		 SIGNAL SQLSTATE '02000' SET MESSAGE_TEXT = 'Metodo de pago invalido';
+    IF multiplicador IS NULL THEN
+		 SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Metodo de pago invalido';
 	END IF;
     
     RETURN var_precio * multiplicador;
