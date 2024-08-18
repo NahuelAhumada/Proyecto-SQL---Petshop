@@ -99,7 +99,7 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS
 DELIMITER //
 CREATE TRIGGER petshop_ecommerce.renovar_ultima_interaccion_carrito
-AFTER UPDATE ON petshop_ecommerce.DETALLE_DE_ORDEN
+AFTER UPDATE ON petshop_ecommerce.ITEM_CARRITO
 FOR EACH ROW
 BEGIN
 	UPDATE petshop_ecommerce.CARRITOS
