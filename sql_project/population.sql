@@ -1,5 +1,7 @@
 USE petshop_ecommerce;
 SET GLOBAL local_infile=1;
+-- Local Dir : F:/Programacion/CODERHOUSE/Proyecto/Primera_Entrega/Proyecto-SQL---Petshop
+
 /*Tabla animales*/
 INSERT INTO  petshop_ecommerce.ANIMALES (nombre)
 VALUES
@@ -77,13 +79,13 @@ LOAD DATA LOCAL INFILE   '/sql_project/data_csv/productos.csv'
 /* Tabla Metodos de Pago*/
 
 INSERT INTO petshop_ecommerce.METODOS_DE_PAGO
-	(nombre)
+	(nombre,modifacion_precio)
 VALUES
-	('Efectivo'),
-    ('Debito'),
-    ('Transferencia bancaria'),
-    ('Credito a una cuota'),
-    ('Credito a tres cuotas');
+	('Efectivo',0.900),
+    ('Debito',1.000),
+    ('Transferencia bancaria',1.000),
+    ('Credito a una cuota',1.000),
+    ('Credito a tres cuotas',1.200);
 /* Tabla Usuarios*/
 LOAD DATA LOCAL INFILE '/sql_project/data_csv/usuarios.csv'
 	INTO TABLE USUARIOS
@@ -182,7 +184,7 @@ INSERT INTO petshop_ecommerce.ORDENES_DE_COMPRA(id_usuario, estado,fecha_de_orde
     (2,'pagado','2024-05-13 09:00:00'),
     (5,'pagado','2024-05-14 15:00:00'),
     (4,'pagado','2024-05-15 14:00:00'),
-    (7,'pagado','2024-05-15 13:00:00'),
+    (7,'pagado','2024-05-15 16:00:00'),
     (3,'pagado','2024-05-21 16:00:00'),
     (10,'pagado','2024-05-24 10:00:00'),
     (9,'pagado','2024-05-25 11:00:00'),
@@ -193,7 +195,7 @@ INSERT INTO petshop_ecommerce.ORDENES_DE_COMPRA(id_usuario, estado,fecha_de_orde
     (13,'pagado','2024-07-05 15:00:00'),
     (14,'pendiente','2024-07-06 16:00:00'),
     (15,'pendiente','2024-07-17 11:00:00');
-
+	
 /* Tabla DETALLE_DE_ORDEN*/
 
 INSERT INTO petshop_ecommerce.DETALLE_DE_ORDEN(id_orden, id_producto, precio_final, cantidad)VALUES 
@@ -219,7 +221,60 @@ INSERT INTO petshop_ecommerce.DETALLE_DE_ORDEN(id_orden, id_producto, precio_fin
     (14,14,650,2),
     (15,14,650,5),
     (16,15,81705,1),
-    (17,11,2500,1),
+    (17,10,25000,1),
+    (17,11,2500,2),
     (18,12,136000,1),
     (19,16,150000,1),
-    (20,4,95000,1);
+    (20,4,95000,1),
+    (20,8,2500,2),
+    (21,12,136000,1);
+    
+INSERT INTO petshop_ecommerce.PAGOS
+	(id_orden,id_metodo_pago,estado,fecha_pago,monto)
+VALUES
+	(1,2,'completado',"2024-04-13 10:00:30",53120),
+	(2,3,'completado',"2024-04-15 12:00:30",23240),
+    (3,4,'completado',"2024-04-21 13:00:30",95000),
+    (4,3,'completado',"2024-04-28 17:00:30",18690),
+    (5,2,'completado',"2024-04-30 09:00:30",650.00),
+    (6,1,'completado',"2024-05-03 10:00:30",25965),
+    (7,2,'completado',"2024-05-07 12:00:30",34600),
+    (8,3,'completado',"2024-05-13 09:00:30",2500),
+    (9,1,'completado',"2024-05-14 15:00:30",2250),
+    (10,2,'completado',"2024-05-15 14:00:30",50500),
+    (11,3,'completado',"2024-05-15 15:00:30",136000),
+    (12,5,'completado',"2024-05-21 16:00:30",23400),
+    (13,4,'completado',"2024-05-24 10:00:30",110010),
+    (14,3,'completado',"2024-05-25 11:00:30",116300),
+    (15,1,'completado',"2024-06-01 12:00:30",2925.00),
+    (16,2,'completado',"2024-06-03 17:00:30",81705),
+    (17,2,'completado',"2024-06-16 14:00:30",30000),
+    (18,3,'completado',"2024-06-21 10:00:30",136000),
+    (19,4,'completado',"2024-07-05 15:00:30",150000),
+    (20,5,'pendiente',"2024-07-06 16:00:30",120000),
+    (21,1,'pendiente',"2024-07-17 11:00:30",122400);
+    
+INSERT INTO petshop_ecommerce.DESPACHO_DE_PEDIDOS
+	(id_orden,id_direccion,fecha_ultima_actualizacion, detalle, estado_envio,retiro_en_local)
+VALUES
+	(1,1,"2024-04-14 10:00:00","Enviado y recibido en tiempo",'entregado',FALSE),
+    (2,2,"2024-04-16 12:00:00","Enviado y recibido en tiempo",'entregado',FALSE),
+    (3,3,"2024-04-22 13:00:40","Enviado y recibido",'entregado',FALSE),
+    (4,null,"2024-04-29 17:00:10","Retirado en el local",'entregado',TRUE),
+    (5,4,"2024-05-01 09:00:00","Enviado y recibido",'entregado',FALSE),
+    (6,4,"2024-05-03 10:01:00","Enviado y recibido",'entregado',FALSE),
+    (7,5,"2024-05-08 12:00:30","Enviado y recibido",'entregado',FALSE),
+    (8,1,"2024-05-14 09:00:00","Enviado y recibido",'entregado',FALSE),
+    (9,4,"2024-05-14 15:02:00","Enviado y recibido",'entregado',FALSE),
+    (10,4,"2024-05-16 09:00:00","Enviado y recibido",'entregado',FALSE),
+    (11,null, "2024-05-16 17:00:00","Retirado en el local",'entregado',TRUE),
+    (12,3,"2024-05-22 16:00:00","Enviado y recibido",'entregado',FALSE),
+    (13,8,"2024-05-25 12:00:00","Enviado y recibido",'entregado',FALSE),
+    (14,null,"2024-05-28 11:00:00","Retirado en el local",'entregado',TRUE),
+    (15,7,"2024-06-01 12:01:30","Enviado y recibido",'entregado',FALSE),
+    (16,9,"2024-06-04 17:00:00","Enviado y recibido",'entregado',FALSE),
+    (17,1,"2024-06-19 14:00:30","Enviado y recibido con demora",'entregado',FALSE),
+    (18,null,"2024-06-21 10:03:30","Retirado en el local",'entregado',TRUE),
+    (19,10,"2024-07-06 15:00:00","Enviado y recibido",'entregado',FALSE),
+    (20,11,"2024-07-06 16:00:30","El pedido esta en camino",'enviado',FALSE),
+    (21,null,"2024-07-17 11:00:30","El pedido se encuentra en el local",'en local',TRUE);
