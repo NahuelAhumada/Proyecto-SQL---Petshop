@@ -1,7 +1,18 @@
 USE petshop_ecommerce;
 
+/*CREATE TABLE LOG_PRECIOS_PRODUCTOS(
+	id_log  int PRIMARY KEY AUTO_INCREMENT,
+    id_producto int,
+    accion enum('INSERT', 'UPDATE'),
+    descripcion varchar(255),
+    usuario varchar(60),
+    fecha_de_evento datetime DEFAULT now()
+);*/
+
+-- VALIDACION DE NUEVO PRODUCTO
+DROP TRIGGER IF EXISTS petshop_ecommerce.validar_nuevo_producto;
+
 DELIMITER //
-DROP TRIGGER IF EXISTS petshop_ecommerce.validar_productos_al_insertar;
 CREATE TRIGGER petshop_ecommerce.validar_nuevo_producto
 BEFORE INSERT ON PRODUCTOS
 FOR EACH ROW
@@ -19,13 +30,13 @@ BEGIN
         SET NEW.estado = 'no disponible';
     END IF;
 END //
-
 DELIMITER ;
 
-DROP TRIGGER IF EXISTS petshop_ecommerce.validar_producto_al_actualizar;
+-- Validacion de producto actualizado
+DROP TRIGGER IF EXISTS petshop_ecommerce.validar_update_producto;
 DELIMITER //
 
-CREATE TRIGGER petshop_ecommerce.validar_producto_al_actualizar
+CREATE TRIGGER petshop_ecommerce.validar_update_producto
 BEFORE UPDATE ON PRODUCTOS
 FOR EACH ROW
 BEGIN
@@ -44,6 +55,7 @@ END //
 
 DELIMITER ;
 
+-- Creacion automatica de carrito de compras asociado a un nuevo usuario
 DROP TRIGGER IF EXISTS petshop_ecommerce.crear_carrito_para_usuario;
 
 DELIMITER //
@@ -55,7 +67,8 @@ BEGIN
 END //
 DELIMITER ;
 
-
+-- Validacion de producto antes de ser insertado en una orden de compra (IMPORTANTE PARA LAS TRANSACCIONES)
+DROP TRIGGER IF EXISTS petshop_ecommerce.validar_producto_antes_de_insertar_en_orden
 DELIMITER //
 CREATE TRIGGER petshop_ecommerce.validar_producto_antes_de_insertar_en_orden
 BEFORE INSERT ON petshop_ecommerce.DETALLE_DE_ORDEN
@@ -63,14 +76,34 @@ FOR EACH ROW
 BEGIN
 	DECLARE var_estado_producto VARCHAR(60);
     DECLARE var_cantidad INT;
-    SELECT estado, cantidad_dispoinble INTO var_estado_producto, var_cantidad
+    
+    SELECT estado, cantidad_dispoinble 
+    INTO var_estado_producto, var_cantidad
     FROM PRODUCTOS
     WHERE id_producto = NEW.id_producto;
+    
     IF estado_producto != 'publicado' THEN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Producto no disponible';
 	END IF;
-    IF (var_cantidad - NEW.cantida_disponible) < 0 THEN
-		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cantidad insuficiente';
+    IF (var_cantidad - NEW.cantidad) < 0 THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cantidad insuficiente en stock';
 	END IF;
+    
+    UPDATE petshop_ecommerce.PRODUCTOS
+    SET cantidad_disponible= cantidad_disponible - NEW.cantidad
+    WHERE id_producto = NEW.id_producto;
+END //
+DELIMITER ;
+
+-- Renovacion de ultima interaccion con un carrito de compra
+DROP TRIGGER IF EXISTS
+DELIMITER //
+CREATE TRIGGER petshop_ecommerce.renovar_ultima_interaccion_carrito
+AFTER UPDATE ON petshop_ecommerce.DETALLE_DE_ORDEN
+FOR EACH ROW
+BEGIN
+	UPDATE petshop_ecommerce.CARRITOS
+    SET fecha_interaccion = now()
+    WHERE id_carrito = NEW.id_carrito;
 END //
 DELIMITER ;
