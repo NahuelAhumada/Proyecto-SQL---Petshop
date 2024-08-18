@@ -1,5 +1,25 @@
 USE petshop_ecommerce;
 
+#Funcion para comprobar si una direccion de envio esta asociada a un usuario. Si existe, retorna TRUE
+DROP FUNCTION IF EXISTS check_usuario_direccion;
+
+DELIMITER //
+CREATE FUNCTION check_usuario_direccion(p_id_usuario INT, p_id_direccion INT) RETURNS BOOLEAN
+DETERMINISTIC
+READS SQL DATA 
+BEGIN
+	DECLARE direccion_asociada BOOLEAN DEFAULT FALSE;
+    
+    SELECT TRUE
+    INTO direccion_asociada
+	FROM petshop_ecommerce.USUARIOS_DIRECCIONES
+    WHERE id_usuario = p_id_usuario
+    AND id_direccion = p_id_direccion;
+    
+    RETURN direccion_asociada;
+END //
+DELIMITER ;
+
 # Funcion para visualizar precio como un varchar, anteponiendo el caracter $
 DROP FUNCTION IF EXISTS mostrar_precio;
 
@@ -18,7 +38,7 @@ DROP FUNCTION IF EXISTS calcular_precio_final;
 DELIMITER //
 CREATE FUNCTION calcular_precio_final(var_precio DECIMAL(15,2), var_id_metodo_de_pago INT) RETURNS DECIMAL(15,2)
 DETERMINISTIC
-NO SQL
+READS SQL DATA 
 BEGIN
     DECLARE multiplicador DECIMAL (1,3);
     
