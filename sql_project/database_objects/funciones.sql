@@ -40,7 +40,7 @@ CREATE FUNCTION calcular_precio_final(var_precio DECIMAL(15,2), var_id_metodo_de
 DETERMINISTIC
 READS SQL DATA 
 BEGIN
-    DECLARE multiplicador DECIMAL (1,3);
+    DECLARE multiplicador DECIMAL (4,3);
     
     SELECT modifacion_precio
     INTO multiplicador
