@@ -137,7 +137,39 @@ Para las demas tablas, se insertaron datos mediante el comando DML INSERT INTO.
 
 ## Funciones
 
-### Funcion id_ultima_orden_de_compra_de_usuario:
+### Función check_usuario_direccion
+
+**Descripción:** Recibe como parametros el id de un usuario y el id de una direccion para corroborar que esten relacionados en la tabla USUARIO_DIRECCION.
+
+**Parámetros:**
+* **p_id_usuario**: Identificador unico de cada usuario
+* **p_id_direccion**: Identificador unico de cada dirección de envio almacenada
+
+**Retorno**
+* BOOLEAN: True si la dirección y el usuario estan relacionados. En caso contrario, retorna FALSE
+
+### Función mostrar_precio
+
+**Descripción:** Recibe un valor de precio y lo devuelve en formato VARCHAR, anteponiendo el caracter '$'
+
+**Parámetros:**
+* **var_precio**: Precio de un producto, carrito u orden de compra 
+
+**Retorno**
+* VARCHAR: Precio visualizado con el caracter '$' al inicio
+
+### Función calcular_precio_final
+
+**Descripción:** Dado un monto de precio y un id de metodo de pago, se valida que el metodo de pago exista en la base de datos y luego, en base a su modificador y al precio original, calcula el precio final. En caso de que el id del método de pago no exista, se lanza un SIGNAl.
+
+**Parámetros:**
+* **var_precio**: Precio de un producto, carrito u orden de compra 
+* **id_metodo_pago**: Identificador unico de métodos de pago.
+
+**Retorno**
+* DECIMAL: Precio calculado en función del modificador de precio
+
+### Función id_ultima_orden_de_compra_de_usuario:
 
 **Descripción:** Esta función retorna el id de la ultima compra que haya realizado un usuario. En vista de que una orden de compra puede presentar error al insertar datos (por ejemplo, insertar una cantidad o precio erroneo), se considera de utilidad tener disposicion una función que acceda a la ultima compra de un usuario para realizar correcciones.
 
@@ -155,7 +187,7 @@ Para las demas tablas, se insertaron datos mediante el comando DML INSERT INTO.
 * **var_id_orden** : Identificador único de cada orden de compra.
 
 **Retorno:**
-* VARCHAR: Monto total de la orden de compra, anteponiendo el caracter '$'.
+* Decimal: Monto total de la orden de compra
 
 ### Funcion calcular_precio_total_de_carrito:
 
@@ -165,7 +197,7 @@ Para las demas tablas, se insertaron datos mediante el comando DML INSERT INTO.
 * **var_id_carrito** : Identificador único de cada carrito de compra.
 
 **Retorno:**
-* VARCHAR: Monto total del carrito de compra, anteponiendo el caracter '$'.
+* Decimal: Monto total del carrito de compra
 
 ---
 
