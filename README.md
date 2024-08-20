@@ -1,17 +1,18 @@
 # Proyecto-SQL Petshop
 
-Repositorio creado para el Curso de SQL de Coderhouse
-
 ### Descripción
 
-Esta es una base de datos diseñada para la gestión de un e-commerce con la tematica de articulos para mascotas.
+Esta es una base de datos diseñada para la gestión de un e-commerce con la tematica de articulos para mascotas. En este e-commerce, los productos tienen multiples niveles de categorias y varias formas de realizar una busqueda (Por animal, marca, categoria y subcategoria). En este e-commerce, cada usuario debe ser capaz de añadir productos disponibles a su carrito de compra y con él realizar una orden de compra valida.
 
 ### Requerimientos a cumplir
 
 1. Gestion de usuarios: Debe almacenar la información de los usuarios, contemplando la posibilidad de que estos tengan asignados más de una dirección de residencia posible para realizar un envio.
-2. Gestion de productos: Cada producto registrado debe estar categorizado tanto por el tipo de animal al que este destinado como por sus caracteristicas (Ejemplo: en un tienda puede haber alimentos para perros como para peces. Mientras que los alimentos para perros pueden categorizarse por edad, los alimentos para peces pueden categorizarse dependiendo de si son de agua fria o tropicales). Asimismo, cada registro debe contener información relevante para su publicación.
-3. Gestion de Carrito de compra: Cada usuario debe estar relacionado a un carrito de compra con el cual podrá gestionar la compra de varios productos.
+2. Gestion de productos: Cada producto registrado debe estar categorizado tanto por el tipo de animal al que este destinado como por sus caracteristicas (Ejemplo: en un tienda puede haber alimentos para perros como para peces. Mientras que los alimentos para perros pueden categorizarse por edad, los alimentos para peces pueden categorizarse dependiendo de si son de agua fria o tropicales). Asimismo, cada registro debe contener información relevante para su publicación y su busqueda dentro del ecommerce.
+3. Gestion de Carrito de compra: Cada usuario debe estar relacionado a un carrito de compra con el cual podrá gestionar la compra de varios productos, siempre y cuando estos esten disponibles.
 4. Gestion de Compras: Se debe llevar un registro de las compras efectuadas, teniendo los productos que la componen, incluyendo sus respectivas cantidades, el usuario que la efectua, la fecha y hora en la que se realize y el metodo de pago utilizado.
+5. Gestion de Pagos y Despacho de Compra: Cada orden de compra deberá estar asociada a un pago y a una forma de despachar el pedido, ya sea por retiro en el local o por envio.
+
+
 ## Importante
 Para la funcionalidad de los STORED PROCEDURES, es necesario correr la siguiente linea:
 
