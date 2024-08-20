@@ -50,7 +50,7 @@ CREATE OR REPLACE VIEW
 	JOIN ANIMALES as a ON (cat.id_animal = a.id_animal);
 
 CREATE OR REPLACE VIEW  
-	UUSUARIOS_SIN_COMPRAS_HACE_3_MESES AS
+	USUARIOS_SIN_COMPRAS_HACE_3_MESES AS
 	SELECT u.id_usuario, u.nombre_de_usuario, u.email
 	FROM USUARIOS AS u
 	WHERE u.id_usuario NOT IN(
