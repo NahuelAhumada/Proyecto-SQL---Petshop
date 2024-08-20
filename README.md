@@ -52,7 +52,7 @@ LOAD DATA LOCAL INFILE   '/sql_project/data_csv/subcategorias.csv'
 1. **USUARIOS**
   - Almacena los datos de cada usuario registrado en el ecommerce
   - Atributos: id_usuario, nombre_de_usuario, nombres, apellidos,email, contresena
-    
+ 
 2. **DIRECCIONES**
   - Cada usuario tiene la posibilidad de tener más una dirección y, en ciertos casos, más de un usuario puede tener la misma dirección. Por lo tanto se utiliza una tabla de direcciones relacionadas a usuarios
   - Atributos: id_direccion, calle, piso, localidad, provincia, pais, codigo_postal
@@ -62,24 +62,25 @@ LOAD DATA LOCAL INFILE   '/sql_project/data_csv/subcategorias.csv'
 - Atributos: id_usuario, id_direccion
    
 4. **CARRITOS**
-  - Tabla de Carrito de compra. Cada uno esta asignado a un unico usuario. Pasado cierto tiempo, un carrito de compra que no haya efecutado una compra debería vaciarse, por lo tanto se almacena la fecha de creación para poder verificarla.
-  - Atributos: id_carrito, id_usuario, fecha_creacion, total_a_pagar
+  - Tabla de Carrito de compra. Cada uno esta asignado a un unico usuario. Pasado cierto tiempo, un carrito de compra que no haya efecutado una compra debería vaciarse, por lo tanto se almacena la fecha de creación para poder verificarla. Es posible calcular el precio total de un carrito por medio de una funcion.
+
+  - Atributos: id_carrito, id_usuario, fecha_creacion
 
 5. **ITEM_CARRITO**
-  - Tabla intermedia para la relación de carritos con los productos.
+  - Tabla intermedia para la relación de carritos con los productos que se ha seleccionado el usuario y la cantidad de los mismos. 
   - Atributos: id_carrito, id_producto, cantidad
 
 6. **ORDENES_DE_COMPRA**
-  - Tabla para hechos que registra en que momento se realiza transaccion de compra y el usuario la efectua.
-  - Atributos: id_orden, id_usuario, id_metodo_pago, fecha_de_orden, total_a_pagar
+  - Tabla para hechos que registra en que momento se realiza transaccion de compra, el usuario la efectua y en que estado se encuentran las transacciones.
+  - Atributos: id_orden, id_usuario, fecha_de_orden, estado
   
 7. **DETALLE_DE_ORDEN**
-  - Tabla de union para la relacion n-n entre las ordenes de compra y los productos. Debido a que es posible que el precio oficial de un producto no coincida con el precio final, se e agrego un campo extra de precio en esta tabla para que figure en la facturación final.
+  - Tabla de union para la relacion n-n entre las ordenes de compra y los productos. Debido a que es posible que el precio oficial de un producto cambié, se agregó un campo extra de precio en esta tabla para que este precio sea independiente a la tabla Productos.
   - Atributos: id_orden, id_producto, id_cantida, precio_final
 
 8. **METODOS_DE_PAGO**
-  - Tabla para registrar los metodos de pago disponibles
-  - Atributos: id_metodo_pago, nombre
+  - Tabla para registrar los metodos de pago disponibles. Dependiendo del metodo de pago, el precio final de una orden de compra puede verse afectado, por lo que añadió un columna que registra la razón de cambio de precio.
+  - Atributos: id_metodo_pago, nombre, modificación_precio
 
 9. **PRODUCTOS**
   - Registro de los productos disponible. Cada producto cuenta con sus respectivo precio, descripción, imagen de publicación, cantidad en stock y un dato que indica en que estado se encuentra (publicado, en borrador o no disponible). Los productos deben poder filtrarse dentro de la pagina, tanto por la marca como por su categoria.
@@ -100,6 +101,14 @@ LOAD DATA LOCAL INFILE   '/sql_project/data_csv/subcategorias.csv'
 13. **ANIMALES**
   - Tabla que almacena los tipos de animales para los cuales se van a vender los productos
   - Atributos: id_animales, nombre
+
+14. **PAGOS**
+  - Tabla de transaccion de los pagos de cada orden de compra. Para mantener una logica simple, se configuró para que cada orden de compra tenga solo un pago asociado, por lo que se se creó una relación 1 - 1 con las tabla ORDENES_DE_COMPRA y METODOS_DE_PAGO. 
+  - Atributos: id_pago, id_orden, id_metodo_pago, estado, fecha_de_pago, monto
+
+15. **DESPACHO DE PRODUCTOS**
+  - Tabla de transaccion para la entrega de pedidos con una relacion 1 a 1 con la tabla ORDENES_DE_COMPRA. Para que las consultas SQL no sean tan complejas a la hora de pedir información, se agruparon en la misma tablas los pedidos que se retiran en el local y los que se envian. Se resolvió que aquellos pedidos para envio se relacionen con la tabla DIRECCIONES_DE_ENVIO por medio del campo id_direccion, la cual a su vez deberá validarse respecto al usuario que haya realizado la compra (es decir, la dirección de envio deberá estar relacionada al usuario que haya efectuado la orden de compra). En el caso de que el pedido sea para retirar de forma presencial, el campo deberá quedar Nulo. En caso de haber algun problema con el retiro del pedido, este puede expresarse en el campo 'detalle'.
+  - Atributos: id_despacho, id_orden, id_direccion, fecha_ultima_actualizacion, detalle, estado_envio, retiro_en_local
 
 ![DRM](images/Petshop.png)
 
@@ -122,7 +131,7 @@ Si el proyecto se corre de manera local, requerirá colocar la ruta completa de 
 ```sql
 LINES TERMINATED BY '\n'
 ```
-Para las demas tablas, se insertaron datos mediante el comando DML INSERT INTO. Hay que considerar que el caso de las tablas PRODUCTOS y SUBCATEGORIAS, al contener FOREIGN KEY's, primero se deben haber insertado datos previos en las Tablas ANIMALES y CATEGORIAS. Para garantizar que la inserción de datos se ejecute de forma ordena, el codigo referente a esta accion esta contenido en un solo archivo: /sql_project/population.sql
+Para las demas tablas, se insertaron datos mediante el comando DML INSERT INTO.
 
 ---
 
