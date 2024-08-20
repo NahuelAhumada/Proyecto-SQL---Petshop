@@ -270,10 +270,10 @@ Vista de los usuarios que no han comprado hace 3 meses
 
 ---
 
-### STORED PROCEDURES
+## STORED PROCEDURES
 
-1. revision_carritos():
-  Mediante este procedimiento se buscar automatizar el limpiado de aquellos carritos de compra que llevan abierto por más de 2 dos días. Si bien esta implementado como un STORED PROCEDURE, podría implementarse tambien como un EVENTO.
+### 1. revision_carritos():
+  Mediante este procedimiento se buscar automatizar el limpiado de aquellos carritos de compra que llevan inactivos por más de 2 dos días. Si bien esta implementado como un STORED PROCEDURE, podría implementarse tambien como un EVENTO. Al no tomar ningún valor como parámetro, no es necesario incluir validaciones.
 
 ```sql
 DELETE FROM ITEM_CARRITO
@@ -282,16 +282,28 @@ DELETE FROM ITEM_CARRITO
     WHERE c.fecha_interaccion<= date_sub(now(), INTERVAL 2 DAY)); 
 ```
 
-2. realizar_compra(IN var_id_carrito INT, IN var_id_metodo_pago INT)
-   Por medio de este procedimiento, una vez que sa validen los datos ingresados, se genera una nueva orden de compra correspondiendo al usuario dueño del carrito. Luego de esto, los datos de cada producto relacionado al carrito, pasan a ser relacionado a la orden de compra generada ingresandolos en la tabla DETALLE_ORDEN. Una vez hecho esto, se vacia el carrito de compra correspodiente al id_carrito que se pasó por parametro.
+Al terminar la ejecución, recorré la tabla CARRITOS y actualiza a la fecha y hora del momento aquellos los valores de fecha_interaccion cuyo intervalo de tiempo sea mayor a 2 días. En decir, aquello carritos de compra que fueron vaciados
 
-###Triggers
+### 2. realizar_compra(IN var_id_carrito INT, IN var_id_metodo_pago INT, IN var_id_direccion INT)
+   
+   Por medio de este procedimiento, una vez que sa validen los datos ingresados, se genera una nueva orden de compra correspondiendo al usuario dueño del carrito. A continuación, los datos de cada producto relacionado al carrito, pasan a ser relacionado a la orden de compra generada ingresandolos en la tabla DETALLE_ORDEN, con el dato de precio que se recuepera en la tabla PRODUCTOS y la cantidad registrada en ITEM_CARRITO. Luego de esto, se crean 2 registros relacionados a la nueva orden de compra: Uno para el pago correspondiente y otro para el despacho de pedido. Para este último, se debe considerar los siguientes punto:
+
+   - 1. Si el dato de direccion es nulo, se genera una registro de forma que este indique que el pedido será retirado en el local
+   - 2. Si el dato es no nulo, se debe verificar que la direccion este relacionada con el usuario. Si hay relación, se crea un registro indicando que el pedido va a ser enviado al domicilio.
+   
+   Cabe aclarar que el stock de cada producto se descuenta mediante un Trigger, los cuales lanzan un SIGNAL al intentar descontar una cantidad mayor a la disponible. Debido a las validaciones y errores que pueden suceder durante las transacciones, se utiliza TCL para realizar un COMMIT el terminar el procedimiento sin errores. En caso de que se lanze una excepción durante la ejecución, todos los movimientos se anulan.
+   
+   Al terminar la ejecución, se vacian los items de la tabla ITEM_CARRITO relacionados al id que se pasó por parámetro.
+  
+---
+
+## Triggers
 1. validar_productos_al_insertar()
 2. validar_producto_al_actualizar
 3. crear_carrito_para_usuario
    
 
-### Ideas para integrar al proyecto final:
+### Ideas para integrar al proyecto:
 1. Llevar a cabo un registro de proveedores, de acuerdo a la marca de los productos
 2. Gestionar los envios de acuerdo a la orden de compra y la dirección ingresada por el usuario
 3. Revisar el estado de los pagos, en el caso de integrar compras con cuotas
