@@ -68,7 +68,7 @@ END //
 DELIMITER ;
 
 -- Validacion de producto antes de ser insertado en una orden de compra (IMPORTANTE PARA LAS TRANSACCIONES)
-DROP TRIGGER IF EXISTS petshop_ecommerce.validar_producto_antes_de_insertar_en_orden
+DROP TRIGGER IF EXISTS petshop_ecommerce.validar_producto_antes_de_insertar_en_orden;
 DELIMITER //
 CREATE TRIGGER petshop_ecommerce.validar_producto_antes_de_insertar_en_orden
 BEFORE INSERT ON petshop_ecommerce.DETALLE_DE_ORDEN
@@ -96,7 +96,7 @@ END //
 DELIMITER ;
 
 -- Renovacion de ultima interaccion con un carrito de compra
-DROP TRIGGER IF EXISTS
+DROP TRIGGER IF EXISTS petshop_ecommerce.renovar_ultima_interaccion_carrito
 DELIMITER //
 CREATE TRIGGER petshop_ecommerce.renovar_ultima_interaccion_carrito
 AFTER UPDATE ON petshop_ecommerce.ITEM_CARRITO
