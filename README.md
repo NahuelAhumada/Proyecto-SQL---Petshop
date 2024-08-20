@@ -298,14 +298,36 @@ Al terminar la ejecución, recorré la tabla CARRITOS y actualiza a la fecha y h
 ---
 
 ## Triggers
-1. validar_productos_al_insertar()
-2. validar_producto_al_actualizar
-3. crear_carrito_para_usuario
+
+### 1. validar_nuevo_producto
+  
+  Antes de insertar un nuevo producto, se verifica que el precio sea mayor a 0 y que la cantidad disponible sea mayor o igual a 0. En casa de que la cantidad sea 0, se fuerza a insertar el producto como 'no disponible.
+
+### 2. validar_producto_al_actualizar
+
+  Misma funcionalidad que el trigger anterior, pero al realizar UPDATE sobre un registro de la tabla PRODUCTO.
+
+### 3. crear_carrito_para_usuario
    
+  Luego de crear un Usuario nuevo, este Trigger crea un nuevo producto en la tabla CARRITO, asociandolo al ese mismo usuario.
+
+### 4. validar_producto_antes_de_insertar_en_orden
+  
+  Antes de insertar un producto en una orden de compra, se verifica que el estado del producto sea 'publicado' y que la cantidad de ese producto se mayor o igual a la que va a insertarse en el DETALLE_DE_ORDEN. En caso de que alguna de esas condiciones no se cumplan, lanza un SIGNAL.
+
+  Luego de insertar el producto en el DETALLE_DE_ORDEN, se reduce la cantidad de stock del producto mediante un UPDATE.
+
+### 5. renovar_ultima_interaccion_carrito
+
+  Al actualizar un registro en ITEM_CARRITO, el registro de la tabla CARRITO al que esta asociado actualiza su valor de fecha_interaccion.
+
+---
 
 ### Ideas para integrar al proyecto:
+
 1. Llevar a cabo un registro de proveedores, de acuerdo a la marca de los productos
 2. Gestionar los envios de acuerdo a la orden de compra y la dirección ingresada por el usuario
-3. Revisar el estado de los pagos, en el caso de integrar compras con cuotas
-4. Gestionar devoluciones y anulaciones de compra
-5. Detallar el tipo de Facturación. En el caso de Factura A se debe incluir la entidad y el cuil
+3. Gestionar devoluciones y anulaciones de compra
+4. Detallar el tipo de Facturación. En el caso de Factura A se debe incluir la entidad y el cuil
+5. Tablas de LOGs para las Tablas de transacciones
+6. Añadir stored procedures para que un usuario personalizado
