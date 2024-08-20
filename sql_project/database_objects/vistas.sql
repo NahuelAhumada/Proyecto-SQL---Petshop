@@ -11,6 +11,7 @@ CREATE OR REPLACE VIEW PRECIO_TOTAL_DE_CARRITOS AS
 CREATE OR REPLACE VIEW TOTAL_A_PAGAR_POR_ORDEN_DE_COMPRA AS
     SELECT
 		id_orden,
+        id_usuario,
         estado,
         fecha_de_orden,
         calcular_precio_total_de_orden(id_orden) as monto_estandar
