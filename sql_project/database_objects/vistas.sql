@@ -24,7 +24,7 @@ SELECT
 FROM 
     PRODUCTOS p
 JOIN 
-    DETALLE_DE_ORDEN do ON p.id_producto = detalles.id_producto
+    DETALLE_DE_ORDEN detalles ON p.id_producto = detalles.id_producto
 GROUP BY 
     p.id_producto, p.nombre;
 
@@ -51,7 +51,7 @@ CREATE OR REPLACE VIEW
 
 CREATE OR REPLACE VIEW  
 	UUSUARIOS_SIN_COMPRAS_HACE_3_MESES AS
-	SELECT u.id_usuarios, u.nombre_de_usuario, u.email
+	SELECT u.id_usuario, u.nombre_de_usuario, u.email
 	FROM USUARIOS AS u
 	WHERE u.id_usuario NOT IN(
 		SELECT DISTINCT o.id_usuario
