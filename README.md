@@ -12,15 +12,40 @@ Esta es una base de datos diseñada para la gestión de un e-commerce con la tem
 4. Gestion de Compras: Se debe llevar un registro de las compras efectuadas, teniendo los productos que la componen, incluyendo sus respectivas cantidades, el usuario que la efectua, la fecha y hora en la que se realize y el metodo de pago utilizado.
 5. Gestion de Pagos y Despacho de Compra: Cada orden de compra deberá estar asociada a un pago y a una forma de despachar el pedido, ya sea por retiro en el local o por envio.
 
+---
 
-## Importante
-Para la funcionalidad de los STORED PROCEDURES, es necesario correr la siguiente linea:
+## Importante para correr la base de datos
+
+Para multiples actualizaciones y eliminaciones, ejecutar la siguiente linea:
 
 ```sql
 SET SQL_SAFE_UPDATE=FALSE;
 ```
 En mi version de MYSQL WORKBENCH 8.0 generó un error y tuve que cambiarlo de la siguiente forma
 -> Edit -> Preferences -> SQL Editor -> Destildar la opcion 'Safe updates'
+
+
+Para correr de forma automatica por consola, cambiar los valores del archivo .env
+
+```
+MYSQL_ROOT_PASSWORD=root
+MYSQL_USER=root
+```
+A continuación, ejecutar el comando
+
+```bash
+make
+```
+
+**Nota**
+
+Para la inserción de datos, algunos fueron importado por archivos csv. creados en windows. En caso de erros, completar las rutas en el archivo population.sql
+
+```sql
+LOAD DATA LOCAL INFILE   '/sql_project/data_csv/subcategorias.csv'
+```
+
+---
 
 ### Tablas
 
