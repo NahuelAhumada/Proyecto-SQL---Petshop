@@ -205,7 +205,7 @@ Para las demas tablas, se insertaron datos mediante el comando DML INSERT INTO.
 
 Se consideró de utilidad tener a disponición las siguientes vista:
 
-### 1. TotalAPagarPorCarrito:
+### 1. PRECIO_TOTAL_DE_CARRITOS:
 
 Almacena una query que permite visualizar el precio de cada carrito de compra activo con el fin de tener a consideración las posibles ventas que se vayan a realizar
 
@@ -213,17 +213,29 @@ Almacena una query que permite visualizar el precio de cada carrito de compra ac
 * id_usuario: Identificador único del usuario
 * nombre_de_usuario: Nombre único con el que se puede identificar a un usuario
 * total_a_pagar: Función creada previamente para calcular y mostrar el monto total acumulado de los items de cada carrito.
+
+### 2. TOTAL_A_PAGAR_POR_ORDEN_DE_COMPRA:
+
+Almacena una query que permite visualizar el precio de cada orden de compras, junto con sus datos correspondientes.
+
+
+**Columnas:**
+* id_orden: Identificador único de la orden de compra
+* id_usuario: Identificador único del usuario que efectuó la compra
+* estado: Estado en el que se encuentra la compra. Puede adquirir los valores 'pendiente','pagado','cancelado'
+* fecha_de_orden: Fecha y hora en la que efectuó la compra
+* monto_estandar: Implementa la función calcular_precio_total_de_orden para mostrar el monto, sin tener en cuenta el metodo pago
   
-### 2. CantidadCompradaDeProductos: 
+### 3. VISTA_PRODUCTOS_POR_TOTAL_VENDIDOS: 
 
 Permite ver la cantidad de Producto que se han vendido historicamente
 
 **Columnas:**
 * id_producto: Identificador único de cada producto
 * nombre: Nombre de los productos que han sido comprados
-* Cantidad_Comprada: Cantidad de productos que han sido comprados
+* total_vendido: Cantidad de productos que han sido comprados
   
-### 3. ProductosVendidoPorPrecioFinal
+### 4. HISTORIAL_VENTA_DE_PRODUCTOS_POR_MONTO_FINAL
 
 Visualiza historicamente a que precio ha sido vendido cada producto. Debido a que el campo precio de la tabla PRODUCTO es meramente de referencia para no afectar a la tabla DETALLE_DE_ORDEN, es de utlidad revisar a que precios se han vendido los productos.
 
@@ -232,20 +244,13 @@ Visualiza historicamente a que precio ha sido vendido cada producto. Debido a qu
 * fecha_de_orden: Fecha en la que se vendio uno o más productos
 * id_producto: Identificador unico de cada producto
 * nombre_de_producto: Nombre de referencia de un producto
-* Precio de venta: Precio al que se vendio un producto en una fecha y hora determinada
-* Cantidad: Cantidad de un producto vendido en una fecha y hora determinada
+* precio_de_venta: Precio al que se vendio un producto en una fecha y hora determinada
+* cantidad: Cantidad de un producto vendido en una fecha y hora determinada
   
-### 4. FechaUltimaCompraDeCadaUsuario
 
-Visualiza la ultima fecha en la que cada usuario realizó una compra
+### 5. VISUALIZACION_DE_SUBCATEGORIAS
 
-**Columnas:**
-* id_usuario: Identificador único de cada usuario
-* nombre_de_usuario: Nombre único con el que se puede identificar a un usuario
-* email: Mail con el que el usuario esta registrado
-* Ultima fecha de compra: Resultado de analizar la ultima fecha de compra, haciendo uso de la función MAX() y GROUP BY
-
-### 5. VisualizacionDeSubcategorias
+Permite visualizar de cada subcategoria almacena con su correspondiente categoria y el animal relacionado
 
 **Columnas:**
 * id_subcategoria: Identificador único de cada subcategoría
@@ -253,11 +258,15 @@ Visualiza la ultima fecha en la que cada usuario realizó una compra
 * Categoria: Nombre de la categoria principal a la que de pertence la subcategoría
 * Animal: Nombre del tipo de animal al que pertence la categoría
 
-### 6. UsuariosQueNoCompraronEn3Meses
+### 6. USUARIOS_SIN_COMPRAS_HACE_3_MESES
+
+Vista de los usuarios que no han comprado hace 3 meses
 
 **Columnas:**
-* nombre_de_usuario
-* email
+* id_usuario: Identificador único de cada usuarios.
+* nombre_de_usuario: Nombre único con el que se identifica a cada usuarios.
+* email: Email único relacionado con el usuario.
+
 
 ---
 
