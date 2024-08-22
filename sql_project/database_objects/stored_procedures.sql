@@ -69,7 +69,8 @@ BEGIN
             
 	# Obtengo id de la orden creada
 	SELECT LAST_INSERT_ID() INTO var_id_orden;
-    -- Codigo alternativo
+    
+    -- Codigo alternativo para ultimo id
 	/*SELECT id_orden
 	INTO var_id_orden 
 	FROM ORDENES_DE_COMPRA
@@ -83,12 +84,15 @@ BEGIN
 		FROM ITEM_CARRITO as items
         JOIN PRODUCTOS as p ON p.id_producto = items.id_producto
 		WHERE items.id_carrito = var_id_carrito;
+	
 	# Vacio el carrito de compra
 	DELETE FROM ITEM_CARRITO
 	WHERE id_carrito = var_id_carrito;
+    
     # Insercion de pago pendiente para la orden de compra
     INSERT INTO petshop_ecommerce.PAGOS (id_orden, id_metodo_pago,monto)
     VALUE (var_id_orden,var_id_metodo_pago,  calcular_precio_final(calcular_precio_total_de_orden(var_id_orden),var_id_metodo_pago));
+    
     # Insercion de despacho de pedido
     --
 	IF envio_a_domicilio THEN
@@ -100,5 +104,37 @@ BEGIN
     END IF;
     COMMIT;
 
+END //
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS cancelar_compra;
+DELIMITER //
+CREATE PROCEDURE cancelar_compra(IN var_id_orden INT)
+BEGIN
+    START TRANSACTION;
+
+    -- 1. Actualizar el estado de la orden
+    UPDATE ORDENES_DE_COMPRA
+    SET estado = 'cancelado'
+    WHERE id_orden = var_id_orden;
+
+    -- 2. Cancelar el pago
+    UPDATE PAGOS
+    SET estado = 'cancelado'
+    WHERE id_orden = var_id_orden;
+
+    -- 3. Cancelar el despacho
+    UPDATE DESPACHO_DE_PEDIDOS
+    SET detalle = "Pedido cancelado",estado_envio = 'cancelado'
+    WHERE id_orden = var_id_orden;
+
+    -- 4. Restaurar el stock para todos los productos en la orden
+    UPDATE PRODUCTOS p
+    JOIN DETALLE_DE_ORDEN d ON p.id_producto = d.id_producto
+    SET p.cantidad_disponible = p.cantidad_disponible + d.cantidad
+    WHERE d.id_orden = var_id_orden;
+
+    COMMIT;
 END //
 DELIMITER ;
