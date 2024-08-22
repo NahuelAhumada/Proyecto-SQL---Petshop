@@ -26,7 +26,6 @@ CREATE PROCEDURE petshop_ecommerce.realizar_compra(IN var_id_carrito INT, IN var
 BEGIN
 	DECLARE var_id_usuario INT;
     DECLARE var_id_orden INT;
-    DECLARE exist_metodo_pago INT DEFAULT 0;
     DECLARE envio_a_domicilio BOOLEAN DEFAULT FALSE;
     
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -46,14 +45,14 @@ BEGIN
 	END IF;
     
     # Validacion de metodo de pago 
-	SELECT COUNT(1)
-	INTO exist_metodo_pago
-	FROM METODOS_DE_PAGO
-	WHERE id_metodo_pago = var_id_metodo_pago;
-	IF exist_metodo_pago != 1 THEN
+	IF NOT EXISTS (SELECT 1 FROM METODOS_DE_PAGO WHERE id_metodo_pago = var_id_metodo_pago) THEN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ERROR: METODO DE PAGO INVALIDO';
 	END IF;
     
+	# Validacion de existencia de productos en el carrito
+    IF NOT EXISTS (SELECT 1 FROM ITEM_CARRITO WHERE id_carrito = var_id_carrito) THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT =  'ERROR: NO HAY PRODUCTOS DENTRO DEL CARRITO DE COMPRAS';
+    END IF;
     # Validacion de direccion de envio
     IF var_id_direccion IS NOT NULL THEN
 		IF check_usuario_direccion(var_id_usuario, var_id_direccion) THEN
@@ -90,11 +89,13 @@ BEGIN
 	WHERE id_carrito = var_id_carrito;
     
     # Insercion de pago pendiente para la orden de compra
-    INSERT INTO petshop_ecommerce.PAGOS (id_orden, id_metodo_pago,monto)
-    VALUE (var_id_orden,var_id_metodo_pago,  calcular_precio_final(calcular_precio_total_de_orden(var_id_orden),var_id_metodo_pago));
+    INSERT INTO petshop_ecommerce.PAGOS (id_orden, id_metodo_pago, monto)
+    VALUE (var_id_orden,
+		var_id_metodo_pago,
+        calcular_precio_final(calcular_precio_total_de_orden(var_id_orden) , var_id_metodo_pago)
+	);
     
     # Insercion de despacho de pedido
-    --
 	IF envio_a_domicilio THEN
 		INSERT INTO DESPACHO_DE_ORDEN(id_orden, id_direccion, detalle,retiro_en_local) 
         VALUE (var_id_orden, var_id_direccion, 'Preparando envio', FALSE);
@@ -102,8 +103,8 @@ BEGIN
 		INSERT INTO DESPACHO_DE_ORDEN(id_orden, id_direccion, detalle,retiro_en_local)
         VALUE (var_id_orden, NULL, 'Para retirar', TRUE);
     END IF;
+    
     COMMIT;
-
 END //
 DELIMITER ;
 

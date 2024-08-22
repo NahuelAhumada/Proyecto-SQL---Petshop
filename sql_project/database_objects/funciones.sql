@@ -7,18 +7,14 @@ DELIMITER //
 CREATE FUNCTION check_usuario_direccion(p_id_usuario INT, p_id_direccion INT) RETURNS BOOLEAN
 DETERMINISTIC
 READS SQL DATA 
-BEGIN
-	DECLARE direccion_asociada BOOLEAN DEFAULT FALSE;
-    
-    SELECT TRUE
-    INTO direccion_asociada
-	FROM petshop_ecommerce.USUARIOS_DIRECCIONES
+BEGIN        
+    RETURN EXISTS (SELECT 1 FROM petshop_ecommerce.USUARIOS_DIRECCIONES
     WHERE id_usuario = p_id_usuario
-    AND id_direccion = p_id_direccion;
-    
-    RETURN direccion_asociada;
+    AND id_direccion = p_id_direccion);
 END //
 DELIMITER ;
+
+SELECT check_usuario_direccion(2,13) FROM DUAL;
 
 # Funcion para visualizar precio como un varchar, anteponiendo el caracter $
 DROP FUNCTION IF EXISTS mostrar_precio;
