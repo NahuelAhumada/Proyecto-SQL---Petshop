@@ -96,9 +96,21 @@ END //
 DELIMITER ;
 
 -- Renovacion de ultima interaccion con un carrito de compra
-DROP TRIGGER IF EXISTS petshop_ecommerce.renovar_ultima_interaccion_carrito
+DROP TRIGGER IF EXISTS petshop_ecommerce.renovar_interaccion_de_carrito_al_insertar_producto
 DELIMITER //
-CREATE TRIGGER petshop_ecommerce.renovar_ultima_interaccion_carrito
+CREATE TRIGGER petshop_ecommerce.renovar_interaccion_de_carrito_al_insertar_producto
+AFTER INSERT ON petshop_ecommerce.ITEM_CARRITO
+FOR EACH ROW
+BEGIN
+	UPDATE petshop_ecommerce.CARRITOS
+    SET fecha_interaccion = now()
+    WHERE id_carrito = NEW.id_carrito;
+END //
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS petshop_ecommerce.renovar_interaccion_de_carrito_al_actualizar
+DELIMITER //
+CREATE TRIGGER petshop_ecommerce.renovar_interaccion_de_carrito_al_actualizar
 AFTER UPDATE ON petshop_ecommerce.ITEM_CARRITO
 FOR EACH ROW
 BEGIN
