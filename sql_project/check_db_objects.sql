@@ -6,7 +6,8 @@ SELECT
 FROM 
     INFORMATION_SCHEMA.TABLES
 WHERE 
-    TABLE_SCHEMA = 'petshop_ecommerce';
+    TABLE_SCHEMA = 'petshop_ecommerce'
+	AND TABLE_TYPE != 'VIEW';
     
 -- VERIFICACION DE IMPORTACION
 
@@ -17,5 +18,59 @@ FROM
     information_schema.tables
 WHERE 
     table_schema = 'petshop_ecommerce'
+	AND TABLE_TYPE != 'VIEW'
 ORDER BY 
-    table_name DESC;
+    table_name ASC;
+    
+-- VERIFICACION DE FUNCIONES
+SELECT 
+    ROUTINE_NAME AS `Función`,
+    DATA_TYPE AS `Tipo de Retorno`
+FROM 
+    INFORMATION_SCHEMA.ROUTINES
+WHERE 
+    ROUTINE_SCHEMA = 'petshop_ecommerce'
+    AND ROUTINE_TYPE = 'FUNCTION'
+ORDER BY 
+    ROUTINE_NAME;
+
+-- VERIFICACION DE VISTAS
+SELECT 
+    TABLE_NAME AS `Vista`,
+    TABLE_TYPE AS `Tipo`
+FROM 
+    INFORMATION_SCHEMA.TABLES
+WHERE 
+    TABLE_SCHEMA = 'petshop_ecommerce' 
+    AND TABLE_TYPE = 'VIEW'
+ORDER BY 
+    TABLE_NAME;
+    
+-- VERIFICACION DE PROCEDURES
+
+SELECT 
+    ROUTINE_NAME AS `Procedimiento`,
+    ROUTINE_TYPE AS `Tipo`
+FROM 
+    INFORMATION_SCHEMA.ROUTINES
+WHERE 
+    ROUTINE_SCHEMA = 'petshop_ecommerce'  
+    AND ROUTINE_TYPE = 'PROCEDURE'
+ORDER BY 
+    ROUTINE_NAME;
+    
+-- VERIFICACION DE TRIGGERS
+
+SELECT 
+    TRIGGER_NAME AS `Nombre del Trigger`,
+    EVENT_MANIPULATION AS `Evento`,
+    EVENT_OBJECT_TABLE AS `Tabla`,
+    ACTION_TIMING AS `Momento`
+FROM 
+    INFORMATION_SCHEMA.TRIGGERS
+WHERE 
+    TRIGGER_SCHEMA = 'petshop_ecommerce'
+ORDER BY 
+    EVENT_OBJECT_TABLE, 
+    ACTION_TIMING, 
+    EVENT_MANIPULATION;
