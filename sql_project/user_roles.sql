@@ -21,3 +21,15 @@ GRANT SELECT ON petshop_ecommerce.TOTAL_A_PAGAR_POR_ORDEN_DE_COMPRA TO 'rol_mark
 GRANT SELECT ON petshop_ecommerce.VISTA_PRODUCTOS_POR_TOTAL_VENDIDOS TO 'rol_marketing';
 GRANT SELECT ON petshop_ecommerce.HISTORIAL_VENTA_DE_PRODUCTOS_POR_MONTO_FINAL TO 'rol_marketing';
 
+CREATE ROLE IF NOT EXISTS 'rol_manager_de_productos';
+GRANT SELECT, INSERT, UPDATE ON petshop_ecommerce.PRODUCTOS TO 'rol_manager_de_productos';
+GRANT SELECT, INSERT, UPDATE ON petshop_ecommerce.MARCAS TO 'rol_manager_de_productos';
+GRANT SELECT, INSERT, UPDATE ON petshop_ecommerce.ANIMALES TO 'rol_manager_de_productos';
+GRANT SELECT, INSERT, UPDATE ON petshop_ecommerce.CATEGORIAS TO 'rol_manager_de_productos';
+GRANT SELECT, INSERT, UPDATE ON petshop_ecommerce.SUBCATEGORIAS TO 'rol_manager_de_productos';
+
+CREATE ROLE IF NOT EXISTS 'rol_manager_de_usuarios';
+GRANT SELECT, INSERT, UPDATE ON petshop_ecommerce.USUARIOS TO 'rol_manager_de_usuarios';
+GRANT SELECT, INSERT, UPDATE ON petshop_ecommerce.DIRECCIONES_DE_ENVIO TO 'rol_manager_de_usuarios';
+GRANT SELECT, INSERT, UPDATE ON petshop_ecommerce.USUARIOS_DIRECCIONES TO 'rol_manager_de_usuarios';
+GRANT SELECT ON USUARIOS_SIN_COMPRAS_HACE_3_MESES TO 'rol_manager_de_usuarios';
