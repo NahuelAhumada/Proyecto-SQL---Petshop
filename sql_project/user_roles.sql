@@ -4,6 +4,9 @@ CREATE ROLE IF NOT EXISTS 'rol_administrador';
 GRANT ALL PRIVILEGES ON petshop_ecommerce.* TO 'rol_administrador' WITH GRANT OPTION;
 
 CREATE ROLE IF NOT EXISTS 'rol_ventas';
+GRANT SELECT ON petshop_ecommerce.CARRITOS TO 'rol_ventas';
+GRANT SELECT ON petshop_ecommerce.ITEM_CARRITO TO 'rol_ventas';
+GRANT SELECT ON petshop_ecommerce.METODOS_DE_PAGO TO 'rol_ventas';
 GRANT SELECT, INSERT, UPDATE ON petshop_ecommerce.ORDENES_DE_COMPRA TO 'rol_ventas';
 GRANT SELECT, INSERT, UPDATE ON petshop_ecommerce.DETALLE_DE_ORDEN TO 'rol_ventas';
 GRANT SELECT, INSERT, UPDATE ON petshop_ecommerce.PAGOS TO 'rol_ventas';
