@@ -32,14 +32,122 @@ Esta es una base de datos diseñada para la gestión de un e-commerce con la tem
 
 | Tabla         | Columna           | Tipo de Datos                         |
 | --------------|-------------------|                                  ---: |
-| USUARIOS      | ID_USUARIO        | INT                                   |
-|               | NOMBRE_DE_USUARIO | VARCHAR(60)                           |
+| USUARIOS      | ID_USUARIO        | INT (PK)                              |
+|               | NOMBRE_DE_USUARIO | VARCHAR(60) NOT NULL UNIQUE           |
+|               | NOMBRES           | VARCHAR(80) NOT NULL                  |
+|               | APELLIDOS         | VARCHAR(80) NOT NULL                  |
+|               | EMAIL             | VARCHAR(100) NOT NULL                 |
+|               | CONTRASENA        | VARCHAR(60) NOT NULL                  |
+
+| Tabla                 | Columna           | Tipo de Datos                         |
+| ----------------------|-------------------|                                  ---: |
+| DIRECCIONES_DE_ENVIO  | ID_DIRECCION      | INT (PK)                              |
+|                       | CALLE             | VARCHAR(60) NOT NULL                  |
+|                       | PISO              | VARCHAR(10)                           | 
+|                       | LOCALIDAD         | VARCHAR(60) NOT NULL                  |
+|                       | PROVINCIA         | VARCHAR(60) NOT NULL                  |
+|                       | PAIS              | VARCHAR(60) NOT NULL                  |
+|                       | CODIGO_POSTAL     | VARCHAR(20) NOT NULL                  |
+
+| Tabla                 | Columna           | Tipo de Datos                         |
+| ----------------------|-------------------|                                  ---: |
+| USUARIOS_DIRECCIONES  | ID_USUARIO        | INT (PK)(FK)                          |
+|                       | ID_DIRECCION      | INT (PK)(FK)                          |
+
+| Tabla                 | Columna           | Tipo de Datos                         |
+| ----------------------|-------------------|                                  ---: |
+| CARRITOS              | ID_CARRITO        | INT (PK)                              |
+|                       | ID_USUARIO        | INT (FK) UNIQUE NOT NULL              |
+|                       | FECHA_INTERACCION | DATETIME NOT NULL DEFAULT NOW()       |
+
+| Tabla                 | Columna           | Tipo de Datos                         |
+| ----------------------|-------------------|                                  ---: |
+| ITEM_CARRITO          | ID_CARRITO        | INT (PK)(FK)                          |
+|                       | ID_PRODUCTO       | INT (PK)(FK)                          |
+|                       | CANTIDAD          | INT                                   |
+
+| Tabla                 | Columna             | Tipo de Datos                                                  |
+| ----------------------|---------------------|                                                           ---: |
+| PRODUCTOS             | ID_PRODUCTO         | INT (PK)                                                       |
+|                       | NOMBRE              | VARCHAR(100) NOT NULL                                          |
+|                       | DESCRIPCION         | VARCHAR(350) NOT NULL                                          |
+|                       | PRECIO              | DECIMAL (10,2)                                                 |
+|                       | IMAGEN              | VARCHAR(100)                                                   |
+|                       | CANTIDAD_DISPONIBLE | INT DEFAULT 1                                                  |
+|                       | ESTADO              | ENUM('publicado','borrador','no disponible') DEFAULT 'borrador'|
+|                       | ID_SUBCATEGORIA     | INT (FK) NOT NULL                                              |
+|                       | ID_MARCA            | INT (FK) NOT NULL                                              |
+
+| Tabla                 | Columna           | Tipo de Datos                         |
+| ----------------------|-------------------|                                  ---: |
+| MARCAS                | ID_MARCA          | INT (PK)                              |
+|                       | NOMBRE            | VARCHAR(60) NOT NULL                  |
+|                       | CONTACTO          | VARCHAR(60)                           |
+
+| Tabla                 | Columna           | Tipo de Datos                         |
+| ----------------------|-------------------|                                  ---: |
+| SUBCATEGORIAS         | ID_SUBCATEGORIA   | INT (PK)                              |
+|                       | NOMBRE            | VARCHAR(60) NOT NULL                  |
+|                       | ID_CATEGORIA      | INT (FK) NOT NULL                     |
+
+| Tabla                 | Columna           | Tipo de Datos                         |
+| ----------------------|-------------------|                                  ---: |
+| CATEGORIAS            | ID_CATEGORIA      | INT (PK)                              |
+|                       | NOMBRE            | VARCHAR(60) NOT NULL                  |
+|                       | ID_ANIMAL         | INT (FK) NOT NULL                     |
+
+| Tabla                 | Columna           | Tipo de Datos                         |
+| ----------------------|-------------------|                                  ---: |
+| ANIMALES              | ID_ANIMAL         | INT (PK)                              |
+|                       | NOMBRE            | VARCHAR(60) NOT NULL                  |
+
+| Tabla                 | Columna           | Tipo de Datos                                                |
+| ----------------------|-------------------|                                                         ---: |
+| ORDENES_DE_COMPRA     | ID_ORDEN          | INT (PK)                                                     |
+|                       | ID_USUARIO        | INT (FK) NOT NULL                                            |
+|                       | ESTADO            | ENUM('pendiente','efecutada','cancelada') DEFAULT 'pendiente'|
+|                       | FECHA_DE_ORDEN    | DATETIME NOT NULL DEFAULT NOW()                              |
+
+| Tabla                 | Columna           | Tipo de Datos                         |
+| ----------------------|-------------------|                                  ---: |
+| DETALLE_DE_ORDEN      | ID_ORDEN          | INT (PK)(FK)                          |
+|                       | ID_PRODUCTO       | INT (PK)(FK)                          |
+|                       | PRECIO_FINAL      | DECIMAL (10,2)                        |
+|                       | CANTIDAD          | INT NOT NULL                          |
+
+| Tabla                 | Columna             | Tipo de Datos                         |
+| ----------------------|---------------------|                                  ---: |
+| METODOS_DE_PAGOS      | ID_METODO_PAGO      | INT (PK)                              |
+|                       | NOMBRE              | VARCHAR(35)                           |
+|                       | MODIFICACION_PRECIO | DECIMAL (4,3)                         |
+
+| Tabla                 | Columna           | Tipo de Datos                                                 |
+| ----------------------|-------------------|                                                          ---: |
+| PAGOS                 | ID_PAGO           | INT (PK)                                                      |
+|                       | ID_ORDEN          | INT (FK) NOT NULL UNIQUE                                      |
+|                       | ID_METODO_PAGO    | INT (FK) NOT NULL                                             |
+|                       | ESTADO            | ENUM('pendiente','completado','cancelado') DEFAULT 'pendiente'|
+|                       | FECHA_PAGO        | DATETIME NOT NULL DEFAULT NOW()                               |
+|                       | MONTO             | DECIMAL (15,2) NOT NULL DEFAULT 0                             |
+
+| Tabla                 | Columna               | Tipo de Datos                                                        |
+| ----------------------|-----------------------|                                                                 ---: |
+| DESPACHO_DE_PEDIDOS   | ID_DESPACHO           | INT (PK)                                                             |
+|                       | ID_ORDEN              | INT (FK) NOT NULL UNIQUE                                             |
+|                       | ID_DIRECCIO           | INT (FK)                                                             |
+|                       | ULTIMA_INTERACCION    | DATETIME NOT NULL DEFAULT NOW()                                      |
+|                       | DETALLE               | VARCHAR (50)                                                         |
+|                       | ESTADO_ENVIO          | ENUM('en local','enviado','entregado','cancelado') DEFAULT 'en local'|
+|                       | RETIRO_EN_LOCAL       | BOOLEAN DEFAULT FALSE                                                |
+
+
+
 
 1. **USUARIOS**
   - Almacena los datos de cada usuario registrado en el ecommerce
   - Atributos: id_usuario, nombre_de_usuario, nombres, apellidos,email, contresena
  
-2. **DIRECCIONES**
+2. **DIRECCIONES_DE_ENVIO**
   - Cada usuario tiene la posibilidad de tener más una dirección y, en ciertos casos, más de un usuario puede tener la misma dirección. Por lo tanto se utiliza una tabla de direcciones relacionadas a usuarios
   - Atributos: id_direccion, calle, piso, localidad, provincia, pais, codigo_postal
 
@@ -94,7 +202,7 @@ Esta es una base de datos diseñada para la gestión de un e-commerce con la tem
 
 15. **DESPACHO DE PRODUCTOS**
   - Tabla de transaccion para la entrega de pedidos con una relacion 1 a 1 con la tabla ORDENES_DE_COMPRA. Para que las consultas SQL no sean tan complejas a la hora de pedir información, se agruparon en la misma tablas los pedidos que se retiran en el local y los que se envian. Se resolvió que aquellos pedidos para envio se relacionen con la tabla DIRECCIONES_DE_ENVIO por medio del campo id_direccion, la cual a su vez deberá validarse respecto al usuario que haya realizado la compra (es decir, la dirección de envio deberá estar relacionada al usuario que haya efectuado la orden de compra). En el caso de que el pedido sea para retirar de forma presencial, el campo deberá quedar Nulo. En caso de haber algun problema con el retiro del pedido, este puede expresarse en el campo 'detalle'.
-  - Atributos: id_despacho, id_orden, id_direccion, fecha_ultima_actualizacion, detalle, estado_envio, retiro_en_local
+  - Atributos: id_despacho, id_orden, id_direccion, ultima_interaccion, detalle, estado_envio, retiro_en_local
 
 ---
 ### Insercion
