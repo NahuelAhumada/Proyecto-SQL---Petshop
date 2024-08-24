@@ -1,8 +1,16 @@
-# Proyecto-SQL Petshop
+# Proyecto SQL - Coderhouse
+
+Alumno: Nahuel Fernando Ahumada
+
+Comision: 57190
+
+Tutor: Ariel Annone
+
+Profesor: Anderson Michel Torres
 
 ### Descripción
 
-Esta es una base de datos diseñada para la gestión de un e-commerce con la tematica de articulos para mascotas. En este e-commerce, los productos tienen multiples niveles de categorias y varias formas de realizar una busqueda (Por animal, marca, categoria y subcategoria). En este e-commerce, cada usuario debe ser capaz de añadir productos disponibles a su carrito de compra y con él realizar una orden de compra valida.
+Esta es una base de datos diseñada para la gestión de un e-commerce con la tematica de articulos para mascotas. Este contiene productos con multiples niveles de categorias y varias formas de realizar una busqueda (Por animal, marca, categoria y subcategoria). En la base de datos, cada usuario registrado tendrá asociado un carrito de compras, con el cual podrá añadir productos disponibles para generar una orden de compra valida.
 
 ### Requerimientos a cumplir
 
@@ -14,40 +22,18 @@ Esta es una base de datos diseñada para la gestión de un e-commerce con la tem
 
 ---
 
-## Importante para correr la base de datos
+## Tablas
 
-Para multiples actualizaciones y eliminaciones, ejecutar la siguiente linea:
+### Diagrama entidad - relación
 
-```sql
-SET SQL_SAFE_UPDATE=FALSE;
-```
-En mi version de MYSQL WORKBENCH 8.0 generó un error y tuve que cambiarlo de la siguiente forma
--> Edit -> Preferences -> SQL Editor -> Destildar la opcion 'Safe updates'
+![DRM](images/Petshop.png)
 
+### Listado de tablas
 
-Para correr de forma automatica por consola, cambiar los valores del archivo .env
-
-```
-MYSQL_ROOT_PASSWORD=root
-MYSQL_USER=root
-```
-A continuación, ejecutar el comando
-
-```bash
-make
-```
-
-**Nota**
-
-Para la inserción de datos, algunos fueron importado por archivos csv. creados en windows. En caso de erros, completar las rutas en el archivo population.sql
-
-```sql
-LOAD DATA LOCAL INFILE   '/sql_project/data_csv/subcategorias.csv'
-```
-
----
-
-### Tablas
+| Tabla         | Columna           | Tipo de Datos                         |
+| --------------|-------------------|                                  ---: |
+| USUARIOS      | ID_USUARIO        | INT                                   |
+|               | NOMBRE_DE_USUARIO | VARCHAR(60)                           |
 
 1. **USUARIOS**
   - Almacena los datos de cada usuario registrado en el ecommerce
@@ -109,8 +95,6 @@ LOAD DATA LOCAL INFILE   '/sql_project/data_csv/subcategorias.csv'
 15. **DESPACHO DE PRODUCTOS**
   - Tabla de transaccion para la entrega de pedidos con una relacion 1 a 1 con la tabla ORDENES_DE_COMPRA. Para que las consultas SQL no sean tan complejas a la hora de pedir información, se agruparon en la misma tablas los pedidos que se retiran en el local y los que se envian. Se resolvió que aquellos pedidos para envio se relacionen con la tabla DIRECCIONES_DE_ENVIO por medio del campo id_direccion, la cual a su vez deberá validarse respecto al usuario que haya realizado la compra (es decir, la dirección de envio deberá estar relacionada al usuario que haya efectuado la orden de compra). En el caso de que el pedido sea para retirar de forma presencial, el campo deberá quedar Nulo. En caso de haber algun problema con el retiro del pedido, este puede expresarse en el campo 'detalle'.
   - Atributos: id_despacho, id_orden, id_direccion, fecha_ultima_actualizacion, detalle, estado_envio, retiro_en_local
-
-![DRM](images/Petshop.png)
 
 ---
 ### Insercion
@@ -320,6 +304,41 @@ Al terminar la ejecución, recorré la tabla CARRITOS y actualiza a la fecha y h
 ### 5. renovar_ultima_interaccion_carrito
 
   Al actualizar un registro en ITEM_CARRITO, el registro de la tabla CARRITO al que esta asociado actualiza su valor de fecha_interaccion.
+
+---
+
+## Importante para correr la base de datos
+
+Para multiples actualizaciones y eliminaciones, ejecutar la siguiente linea:
+
+```sql
+SET SQL_SAFE_UPDATE=FALSE;
+```
+En mi version de MYSQL WORKBENCH 8.0 generó un error y tuve que cambiarlo de la siguiente forma
+-> Edit -> Preferences -> SQL Editor -> Destildar la opcion 'Safe updates'
+
+
+Para correr de forma automatica por consola, cambiar los valores del archivo .env
+
+```
+MYSQL_ROOT_PASSWORD=root
+MYSQL_USER=root
+```
+A continuación, ejecutar el comando
+
+```bash
+make
+```
+
+**Nota**
+
+Para la inserción de datos, algunos fueron importado por archivos csv. creados en windows. En caso de correr la base de datos de manera local en una computadora, completar las rutas en el archivo population.sql
+
+```sql
+LOAD DATA LOCAL INFILE   '/sql_project/data_csv/subcategorias.csv'
+```
+
+
 
 ---
 
