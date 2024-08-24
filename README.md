@@ -30,14 +30,14 @@ Esta es una base de datos diseñada para la gestión de un e-commerce con la tem
 
 ### Listado de tablas
 
-| Tabla         | Columna           | Tipo de Datos                         |
-| --------------|-------------------|                                  ---: |
-| USUARIOS      | ID_USUARIO        | INT (PK)                              |
-|               | NOMBRE_DE_USUARIO | VARCHAR(60) NOT NULL UNIQUE           |
-|               | NOMBRES           | VARCHAR(80) NOT NULL                  |
-|               | APELLIDOS         | VARCHAR(80) NOT NULL                  |
-|               | EMAIL             | VARCHAR(100) NOT NULL                 |
-|               | CONTRASENA        | VARCHAR(60) NOT NULL                  |
+| Tabla                 | Columna           | Tipo de Datos                         |
+| ----------------------|-------------------|                                  ---: |
+| USUARIOS              | ID_USUARIO        | INT (PK)                              |
+|                       | NOMBRE_DE_USUARIO | VARCHAR(60) NOT NULL UNIQUE           |
+|                       | NOMBRES           | VARCHAR(80) NOT NULL                  |
+|                       | APELLIDOS         | VARCHAR(80) NOT NULL                  |
+|                       | EMAIL             | VARCHAR(100) NOT NULL                 |
+|                       | CONTRASENA        | VARCHAR(60) NOT NULL                  |
 
 | Tabla                 | Columna           | Tipo de Datos                         |
 | ----------------------|-------------------|                                  ---: |
