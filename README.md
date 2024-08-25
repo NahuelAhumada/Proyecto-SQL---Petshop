@@ -347,7 +347,7 @@ Almacena una query que permite visualizar el precio de cada orden de compras, ju
 **Columnas:**
 * id_orden: Identificador único de la orden de compra
 * id_usuario: Identificador único del usuario que efectuó la compra
-* estado: Estado en el que se encuentra la compra. Puede adquirir los valores 'pendiente','pagado','cancelado'
+* estado: Estado en el que se encuentra la compra. Puede adquirir los valores 'pendiente','efectuada','cancelado'
 * fecha_de_orden: Fecha y hora en la que efectuó la compra
 * monto_estandar: Implementa la función calcular_precio_total_de_orden para mostrar el monto, sin tener en cuenta el metodo pago
   
@@ -456,6 +456,10 @@ Al terminar la ejecución, recorré la tabla CARRITOS y actualiza a la fecha y h
   Al actualizar un registro en ITEM_CARRITO, el registro de la tabla CARRITO al que esta asociado actualiza su valor de fecha_interaccion.
 
 ---
+
+## Roles y permisos
+
+## Back up de la base de datos
 
 ## Importante para correr la base de datos
 
