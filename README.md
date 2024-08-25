@@ -450,13 +450,15 @@ Al terminar la ejecución, recorré la tabla CARRITOS y actualiza a la fecha y h
 
 ## Importante para correr la base de datos
 
-Algunos procedimientos implican actualizar y borrar multiples registros. Para habilitar esta acción, es necesario ejecutar la siguiente linea:
+Algunos procedimientos implican actualizar y borrar multiples registros. Para habilitar esta acción, dependiendo de su versión de MYSQL será necesario ejecutar la siguiente linea:
 
 ```sql
 SET SQL_SAFE_UPDATE=FALSE;
 ```
 En mi version de MYSQL WORKBENCH 8.0 generó un error y tuve que cambiarlo de la siguiente forma
 -> Edit -> Preferences -> SQL Editor -> Destildar la opcion 'Safe updates'
+
+![Preferences](images/Captura_preferences.png)
 
 
 Para correr de forma automatica por consola, cambiar los valores del archivo .env
