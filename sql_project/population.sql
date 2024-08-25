@@ -1,4 +1,5 @@
 USE petshop_ecommerce;
+
 SET GLOBAL local_infile=1;
 -- Local Dir : F:/Programacion/CODERHOUSE/Proyecto/Primera_Entrega/Proyecto-SQL---Petshop
 
@@ -255,7 +256,7 @@ VALUES
     (21,1,'pendiente',"2024-07-17 11:00:30",122400);
     
 INSERT INTO petshop_ecommerce.DESPACHO_DE_PEDIDOS
-	(id_orden,id_direccion,fecha_ultima_actualizacion, detalle, estado_envio,retiro_en_local)
+	(id_orden,id_direccion,ultima_interaccion, detalle, estado_envio,retiro_en_local)
 VALUES
 	(1,1,"2024-04-14 10:00:00","Enviado y recibido en tiempo",'entregado',FALSE),
     (2,2,"2024-04-16 12:00:00","Enviado y recibido en tiempo",'entregado',FALSE),

@@ -26,7 +26,7 @@ CREATE TABLE `despacho_de_pedidos` (
   `id_despacho` int NOT NULL AUTO_INCREMENT,
   `id_orden` int NOT NULL,
   `id_direccion` int DEFAULT NULL,
-  `fecha_ultima_actualizacion` datetime NOT NULL DEFAULT (now()),
+  `ultima_interaccion` datetime NOT NULL DEFAULT (now()),
   `detalle` varchar(50) DEFAULT NULL,
   `estado_envio` enum('en local','enviado','entregado','cancelado') DEFAULT 'en local',
   `retiro_en_local` tinyint(1) DEFAULT '0',
