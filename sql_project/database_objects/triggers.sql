@@ -1,14 +1,5 @@
 USE petshop_ecommerce;
 
-/*CREATE TABLE LOG_PRECIOS_PRODUCTOS(
-	id_log  int PRIMARY KEY AUTO_INCREMENT,
-    id_producto int,
-    accion enum('INSERT', 'UPDATE'),
-    descripcion varchar(255),
-    usuario varchar(60),
-    fecha_de_evento datetime DEFAULT now()
-);*/
-
 -- VALIDACION DE NUEVO PRODUCTO
 DROP TRIGGER IF EXISTS petshop_ecommerce.validar_nuevo_producto;
 
@@ -76,6 +67,16 @@ FOR EACH ROW
 BEGIN
 	DECLARE var_estado_producto VARCHAR(60);
     DECLARE var_cantidad INT;
+    DECLARE var_estado_orden VARCHAR(10);
+    
+    SELECT estado_orden 
+    INTO var_estado_orden
+    FROM ORDENES_DE_COMPRA
+    WHERE id_orden = NEW.id_orden;
+    
+    IF var_estado_orden = 'cancelada' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se pueden agregar productos a una orden cancelada';
+    END IF;
     
     SELECT estado, cantidad_dispoinble 
     INTO var_estado_producto, var_cantidad
