@@ -1,4 +1,5 @@
 USE petshop_ecommerce;
+/*SET SQL_SAFE_UPDATE=FALSE;*/
 
 DROP PROCEDURE IF EXISTS petshop_ecommerce.revision_carritos;
 DELIMITER //
