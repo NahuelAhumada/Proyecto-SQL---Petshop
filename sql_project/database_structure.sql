@@ -25,7 +25,8 @@ CREATE TABLE DIRECCIONES_DE_ENVIO (
 
 CREATE TABLE USUARIOS_DIRECCIONES(
 	id_usuario int NOT NULL,
-    id_direccion int NOT NULL
+    id_direccion int NOT NULL,
+    PRIMARY KEY (id_usuario, id_direccion)
 )COMMENT 'Tabla de relacion n-n entre los usuarios y las direcciones de envio';
 
 CREATE TABLE CARRITOS (
@@ -45,7 +46,7 @@ CREATE TABLE PRODUCTOS (
 	id_producto int PRIMARY KEY AUTO_INCREMENT,
 	nombre varchar(100) NOT NULL,
 	descripcion varchar(350) NOT NULL,
-    precio decimal(10, 2), -- Precio de lista
+    precio decimal(10, 2) NOT NULL, -- Precio de lista
 	imagen varchar(100),
     cantidad_disponible int DEFAULT 1,
     estado enum ('publicado','borrador','no disponible') DEFAULT 'borrador',
@@ -55,7 +56,7 @@ CREATE TABLE PRODUCTOS (
 
 CREATE TABLE MARCAS(
 	id_marca int PRIMARY KEY AUTO_INCREMENT,
-    nombre varchar(60),
+    nombre varchar(60) NOT NULL,
     contacto varchar(60)
 ) COMMENT 'Tabla de las marcas de cada producto';
 
@@ -79,22 +80,22 @@ CREATE TABLE ANIMALES (
 CREATE TABLE ORDENES_DE_COMPRA (
 	id_orden int PRIMARY KEY AUTO_INCREMENT,
     id_usuario int NOT NULL,
-    estado enum('pendiente', 'pagado', 'cancelado') DEFAULT 'pendiente',
+    estado enum('pendiente', 'efectuada', 'cancelado') DEFAULT 'pendiente',
     fecha_de_orden datetime NOT NULL DEFAULT(now())
 )COMMENT 'Tabla de las ordenes de compra registradas historiamente, relacionada al usuario que la pidio';
 
 CREATE TABLE DETALLE_DE_ORDEN (
 	id_orden int NOT NULL,
 	id_producto int NOT NULL,
-    precio_final decimal(10, 2),
+    precio_final decimal(10, 2) NOT NULL,
 	cantidad int NOT NULL,
     PRIMARY KEY (id_orden, id_producto)
 )COMMENT 'Tabla de relacion n-n entre ordenes de compra y los productos correspondiente de cada compra';
 
 CREATE TABLE METODOS_DE_PAGO(
 	id_metodo_pago int PRIMARY KEY AUTO_INCREMENT,
-    nombre varchar(35),
-    modifacion_precio decimal (4,3)
+    nombre varchar(35) NOT NULL,
+    modifacion_precio decimal (4,3) NOT NULL
 )COMMENT 'Tabla que almacena los metodos de pagos disponibles para cada compra';
 
 CREATE TABLE PAGOS (
@@ -108,9 +109,9 @@ CREATE TABLE PAGOS (
 
 CREATE TABLE DESPACHO_DE_PEDIDOS(
 	id_despacho int PRIMARY KEY AUTO_INCREMENT,
-    id_orden int NOT NULL,
+    id_orden int NOT NULL UNIQUE,
     id_direccion int, -- Puede ser NULL si es retiro en local
-    fecha_ultima_actualizacion datetime NOT NULL DEFAULT(now()),
+    ultima_interaccion datetime NOT NULL DEFAULT(now()),
     detalle varchar(50),
     estado_envio enum('en local', 'enviado', 'entregado', 'cancelado') DEFAULT 'en local',
     retiro_en_local BOOLEAN DEFAULT FALSE
