@@ -8,9 +8,23 @@ Tutor: Ariel Annone
 
 Profesor: Anderson Michel Torres
 
-### Descripción
+---
 
-Esta es una base de datos diseñada para la gestión de un e-commerce con la tematica de articulos para mascotas. Este contiene productos con multiples niveles de categorias y varias formas de realizar una busqueda (Por animal, marca, categoria y subcategoria). En la base de datos, cada usuario registrado tendrá asociado un carrito de compras, con el cual podrá añadir productos disponibles para generar una orden de compra valida.
+### Introducción
+
+Esta es una base de datos diseñada en MYSQL para la gestión de un e-commerce con la temática de árticulos para mascotas. Este contiene productos con múltiples niveles de categorías y varias formas de realizar una busqueda (Por animal, marca, categoría y subcategoría). En la base de datos, cada usuario registrado tendrá asociado un carrito de compras, con el cual podrá añadir productos disponibles y generar una orden de compra valida, pudiendo definir el método de pago y si desea recibirlo por envío o retirarlo al local.
+
+---
+
+### Objetivo
+
+Diseñar e implementar una base de datos relacional que permita gestionar de manera eficiente las operaciones de un e-commerce, asegurando que la gestión de usuarios, las ordenes de compra y la entrega de productos estén bien documentados y organizados. Al mismo tiempo, debe ser capaz de desplegar información de múltiples tablas de manera eficiente para distintos roles del proyecto.
+
+---
+
+### Situación problemática
+
+Se necesita un base de datos con una estructura bien definida, que permita adaptarse facilmente a nuevos requerimientos y se asegure la consistencia de los datos a través de reglas de integridad referencial y permisos de usuario bien definidos.
 
 ### Requerimientos a cumplir
 
@@ -18,7 +32,7 @@ Esta es una base de datos diseñada para la gestión de un e-commerce con la tem
 2. Gestion de productos: Cada producto registrado debe estar categorizado tanto por el tipo de animal al que este destinado como por sus caracteristicas (Ejemplo: en un tienda puede haber alimentos para perros como para peces. Mientras que los alimentos para perros pueden categorizarse por edad, los alimentos para peces pueden categorizarse dependiendo de si son de agua fria o tropicales). Asimismo, cada registro debe contener información relevante para su publicación y su busqueda dentro del ecommerce.
 3. Gestion de Carrito de compra: Cada usuario debe estar relacionado a un carrito de compra con el cual podrá gestionar la compra de varios productos, siempre y cuando estos esten disponibles.
 4. Gestion de Compras: Se debe llevar un registro de las compras efectuadas, teniendo los productos que la componen, incluyendo sus respectivas cantidades, el usuario que la efectua, la fecha y hora en la que se realize y el metodo de pago utilizado.
-5. Gestion de Pagos y Despacho de Compra: Cada orden de compra deberá estar asociada a un pago y a una forma de despachar el pedido, ya sea por retiro en el local o por envio.
+5. Gestion de Venta: Cada orden de compra deberá estar asociada a un pago y a una forma de despachar el pedido, ya sea por retiro en el local o por envio.
 
 ---
 
@@ -204,26 +218,45 @@ Esta es una base de datos diseñada para la gestión de un e-commerce con la tem
   - Tabla de transaccion para la entrega de pedidos con una relacion 1 a 1 con la tabla ORDENES_DE_COMPRA. Para que las consultas SQL no sean tan complejas a la hora de pedir información, se agruparon en la misma tablas los pedidos que se retiran en el local y los que se envian. Se resolvió que aquellos pedidos para envio se relacionen con la tabla DIRECCIONES_DE_ENVIO por medio del campo id_direccion, la cual a su vez deberá validarse respecto al usuario que haya realizado la compra (es decir, la dirección de envio deberá estar relacionada al usuario que haya efectuado la orden de compra). En el caso de que el pedido sea para retirar de forma presencial, el campo deberá quedar Nulo. En caso de haber algun problema con el retiro del pedido, este puede expresarse en el campo 'detalle'.
   - Atributos: id_despacho, id_orden, id_direccion, ultima_interaccion, detalle, estado_envio, retiro_en_local
 
+
 ---
-### Insercion
-Los datos para cada tabla se obtienen al correr el archivo  'population.sql' por medio de multiples INSERT INTO
+
+### Inserción de datos
+
+Para las tablas `DIRECCIONES_DE_ENVIO`, `USUARIOS`, `SUBCATEGORIAS` y `PRODUCTOS` se importan los datos mediante los correspondientes archivos .csv. El resto de datos de prueba se insertan  mediante el comando DML INSERT INTO.
+
+**Importación**
+
+Es importante configurar los permisos pertinentes en MySQL con la siguiente linea de código: 
 
 ```sql
-LOAD DATA LOCAL INFILE   '/sql_project/data_csv/subcategorias.csv'
-    INTO TABLE petshop_ecommerce.SUBCATEGORIAS
+SET GLOBAL local_infile=1;
+```
+(Esta linea se insertó el archivo `population.sql`) 
+
+Luego de esa configuración, ya es posible ejecutar el siguiente comando para la importación:
+
+```sql
+LOAD DATA LOCAL INFILE   '/sql_project/data_csv/nombre_de_archivo.csv'
+    INTO TABLE petshop_ecommerce.NOMBRE_DE_TABLA
     FIELDS TERMINATED BY ',' ENCLOSED BY '"'
     LINES TERMINATED BY '\r\n'
     IGNORE 1 LINES
-    (nombre,id_categoria);
+    (COLUMNAS);
 ```
 
-**NOTAS:**
-Si el proyecto se corre de manera local, requerirá colocar la ruta completa de los archivos. Los archivos csv fueron creados en windows; en el caso de que cuente con archivos creados en linux, se debe modificar la siguiente linea:
+Si el proyecto se corre de manera local, requerirá colocar la ruta completa de los archivos en la primera linea.
+
+```sql
+LOAD DATA LOCAL INFILE   '/sql_project/data_csv/nombre_de_archivo.csv'
+```
+
+**Nota:**
+ Los archivos csv fueron creados en windows; en el caso de que cuente con archivos creados en linux, se debe modificar la siguiente linea:
 
 ```sql
 LINES TERMINATED BY '\n'
 ```
-Para las demas tablas, se insertaron datos mediante el comando DML INSERT INTO.
 
 ---
 
@@ -417,7 +450,7 @@ Al terminar la ejecución, recorré la tabla CARRITOS y actualiza a la fecha y h
 
 ## Importante para correr la base de datos
 
-Para multiples actualizaciones y eliminaciones, ejecutar la siguiente linea:
+Algunos procedimientos implican actualizar y borrar multiples registros. Para habilitar esta acción, es necesario ejecutar la siguiente linea:
 
 ```sql
 SET SQL_SAFE_UPDATE=FALSE;
@@ -437,24 +470,14 @@ A continuación, ejecutar el comando
 ```bash
 make
 ```
-
-**Nota**
-
-Para la inserción de datos, algunos fueron importado por archivos csv. creados en windows. En caso de correr la base de datos de manera local en una computadora, completar las rutas en el archivo population.sql
-
-```sql
-LOAD DATA LOCAL INFILE   '/sql_project/data_csv/subcategorias.csv'
-```
-
-
-
 ---
 
 ### Ideas para integrar al proyecto:
 
-1. Llevar a cabo un registro de proveedores, de acuerdo a la marca de los productos
-2. Gestionar los envios de acuerdo a la orden de compra y la dirección ingresada por el usuario
-3. Gestionar devoluciones y anulaciones de compra
+1. Hacer un registro de proveedores de los productos, de acuerdo a la marca de los productos
+2. Tabla Vendedores: Llevar a cabo un registro de vendedores y sus corresponidentes ventas a cargo.3. Gestionar devoluciones y anulaciones de compra con tablas propias
 4. Detallar el tipo de Facturación. En el caso de Factura A se debe incluir la entidad y el cuil
 5. Tablas de LOGs para las Tablas de transacciones
 6. Añadir stored procedures para que un usuario personalizado
+7. Añadir la función de comentarios de productos escritos por usuarios
+
