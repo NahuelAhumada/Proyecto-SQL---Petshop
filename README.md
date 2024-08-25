@@ -419,6 +419,11 @@ Al terminar la ejecución, recorré la tabla CARRITOS y actualiza a la fecha y h
    Cabe aclarar que el stock de cada producto se descuenta mediante un Trigger, los cuales lanzan un SIGNAL al intentar descontar una cantidad mayor a la disponible. Debido a las validaciones y errores que pueden suceder durante las transacciones, se utiliza TCL para realizar un COMMIT el terminar el procedimiento sin errores. En caso de que se lanze una excepción durante la ejecución, todos los movimientos se anulan.
    
    Al terminar la ejecución, se vacian los items de la tabla ITEM_CARRITO relacionados al id que se pasó por parámetro.
+
+### 3. cancelar_compra(IN var_id_orden INT)
+
+  Setea a estado 'cancelado' los campos correspondientes al id_orden de las tablas ORDENES_DE_COMPRA, PAGOS y DESPACHO_DE_PEDIDOS. Luego de eso, adiciona a cada producto del pedido la cantidad disponible que habia sido solicitada en el pedido.
+
   
 ---
 
@@ -438,11 +443,15 @@ Al terminar la ejecución, recorré la tabla CARRITOS y actualiza a la fecha y h
 
 ### 4. validar_producto_antes_de_insertar_en_orden
   
-  Antes de insertar un producto en una orden de compra, se verifica que el estado del producto sea 'publicado' y que la cantidad de ese producto se mayor o igual a la que va a insertarse en el DETALLE_DE_ORDEN. En caso de que alguna de esas condiciones no se cumplan, lanza un SIGNAL.
+  Antes de insertar un producto en una orden de compra, se verifica que esta ultima no sea una orden de compra cancelada. El producto que va a ser insertado debe estar en estado 'publicado' y su cantidad disponible deber ser mayor o igual a la que va a insertarse en el DETALLE_DE_ORDEN. En caso de que alguna de esas condiciones no se cumplan, lanza un SIGNAL.
 
   Luego de insertar el producto en el DETALLE_DE_ORDEN, se reduce la cantidad de stock del producto mediante un UPDATE.
 
-### 5. renovar_ultima_interaccion_carrito
+### 5. renovar_interaccion_de_carrito_al_insertar_producto
+
+  Al insertar un registro en ITEM_CARRITO, el registro de la tabla CARRITO al que esta asociado actualiza su valor de fecha_interaccion.
+
+### 6. renovar_interaccion_de_carrito_al_actualizar
 
   Al actualizar un registro en ITEM_CARRITO, el registro de la tabla CARRITO al que esta asociado actualiza su valor de fecha_interaccion.
 
@@ -455,8 +464,9 @@ Algunos procedimientos implican actualizar y borrar multiples registros. Para ha
 ```sql
 SET SQL_SAFE_UPDATE=FALSE;
 ```
-En mi version de MYSQL WORKBENCH 8.0 generó un error y tuve que cambiarlo de la siguiente forma
--> Edit -> Preferences -> SQL Editor -> Destildar la opcion 'Safe updates'
+En mi version de MYSQL WORKBENCH 8.0 generó un error y tuve que cambiarlo de la siguiente forma:
+
+Edit -> Preferences -> SQL Editor -> Destildar la opcion 'Safe updates'
 
 ![Preferences](images/Captura_preferences.png)
 
@@ -482,4 +492,3 @@ make
 5. Tablas de LOGs para las Tablas de transacciones
 6. Añadir stored procedures para que un usuario personalizado
 7. Añadir la función de comentarios de productos escritos por usuarios
-
