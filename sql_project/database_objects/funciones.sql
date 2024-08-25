@@ -14,8 +14,6 @@ BEGIN
 END //
 DELIMITER ;
 
-SELECT check_usuario_direccion(2,13) FROM DUAL;
-
 # Funcion para visualizar precio como un varchar, anteponiendo el caracter $
 DROP FUNCTION IF EXISTS mostrar_precio;
 
