@@ -128,7 +128,7 @@ BEGIN
 
     -- 3. Cancelar el despacho
     UPDATE DESPACHO_DE_PEDIDOS
-    SET detalle = "Pedido cancelado",estado_envio = 'cancelado'
+    SET detalle = "Pedido cancelado", estado_envio = 'cancelado'
     WHERE id_orden = var_id_orden;
 
     -- 4. Restaurar el stock para todos los productos en la orden
