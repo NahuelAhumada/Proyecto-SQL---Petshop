@@ -67,23 +67,24 @@ FOR EACH ROW
 BEGIN
 	DECLARE var_estado_producto VARCHAR(60);
     DECLARE var_cantidad INT;
-    DECLARE var_estado_orden VARCHAR(10);
+    DECLARE var_estado VARCHAR(10);
     
-    SELECT estado_orden 
-    INTO var_estado_orden
+    SELECT estado
+    INTO var_estado
     FROM ORDENES_DE_COMPRA
     WHERE id_orden = NEW.id_orden;
     
-    IF var_estado_orden = 'cancelada' THEN
+    IF var_estado = 'cancelada' THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se pueden agregar productos a una orden cancelada';
     END IF;
     
-    SELECT estado, cantidad_dispoinble 
+    SELECT estado, cantidad_disponible 
     INTO var_estado_producto, var_cantidad
     FROM PRODUCTOS
     WHERE id_producto = NEW.id_producto;
+
     
-    IF estado_producto != 'publicado' THEN
+    IF var_estado_producto != 'publicado' THEN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Producto no disponible';
 	END IF;
     IF (var_cantidad - NEW.cantidad) < 0 THEN
