@@ -240,7 +240,7 @@ Luego de esa configuración, ya es posible ejecutar el siguiente comando para la
 LOAD DATA LOCAL INFILE   '/sql_project/data_csv/nombre_de_archivo.csv'
     INTO TABLE petshop_ecommerce.NOMBRE_DE_TABLA
     FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-    LINES TERMINATED BY '\r\n'
+    LINES TERMINATED BY '\n'
     IGNORE 1 LINES
     (COLUMNAS);
 ```
@@ -250,19 +250,21 @@ Si el proyecto se corre de manera local, requerirá colocar la ruta completa de 
 ```sql
 LOAD DATA LOCAL INFILE   '/sql_project/data_csv/nombre_de_archivo.csv'
 ```
+En el caso de error, dependiendo de su sistema operativos deberá cambiar la siguiente linea
 
+```sql
+LINES TERMINATED BY '\r\n'
+```
 Al terminar la inserción, los registro deben quedar de la siguiente forma:
 
 ![REGISTROS](images/registros.png)
 
-Esto se puede corroborar desde 'check_db_objects.sql'
+Esto se puede corroborar desde 'check_db_objects.sql' o
 
-**Nota:**
- Los archivos csv fueron creados en windows; en el caso de que cuente con archivos creados en linux, se debe modificar la siguiente linea:
-
-```sql
-LINES TERMINATED BY '\n'
+```bash
+make test-db
 ```
+
 
 ---
 
