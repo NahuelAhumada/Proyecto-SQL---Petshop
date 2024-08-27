@@ -87,7 +87,7 @@ BEGIN
     FROM DETALLE_DE_ORDEN
     WHERE id_orden = var_id_orden;
     IF resultado_operacion IS NULL THEN
-		SIGNAL SQLSTATE '02000' SET MESSAGE_TEXT = 'ID de ORDEN invalida', MYSQL_ERRNO = 1000;
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ID de ORDEN invalida';
     END IF;
     RETURN resultado_operacion;
 END //
@@ -110,7 +110,7 @@ BEGIN
     AND id_carrito = var_id_carrito);
     
     IF resultado_operacion IS NULL THEN
-		SIGNAL SQLSTATE '02000' SET MESSAGE_TEXT = 'No hay productos para este carrito', MYSQL_ERRNO = 1000;
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No hay productos para este carrito';
     END IF;
     RETURN resultado_operacion;
 END //
