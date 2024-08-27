@@ -50,7 +50,7 @@ CREATE TABLE PRODUCTOS (
 	imagen varchar(100),
     cantidad_disponible int DEFAULT 1,
     estado enum ('publicado','borrador','no disponible') DEFAULT 'borrador',
-	id_subcategoria	 int NOT NULL,
+	id_subcategoria int NOT NULL,
     id_marca int
 )COMMENT 'Tabla de productos del ecommerce. El precio almacenado se corresponde al precio de lista actual';
 
