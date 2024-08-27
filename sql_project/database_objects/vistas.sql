@@ -39,7 +39,7 @@ CREATE OR REPLACE VIEW
 		mostrar_precio(d.precio_final) AS precio_de_venta,
 		d.cantidad
     FROM
-    PRODUCTOS as P
+    PRODUCTOS as p
     JOIN DETALLE_DE_ORDEN AS d ON (p.id_producto = d.id_producto)
 	JOIN ORDENES_DE_COMPRA AS o ON(d.id_orden = o.id_orden);
 
