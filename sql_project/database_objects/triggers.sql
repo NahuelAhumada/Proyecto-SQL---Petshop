@@ -17,6 +17,7 @@ BEGIN
     IF NEW.cantidad_disponible < 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La cantidad de stock no puede ser negativa';
     END IF;
+    
     IF NEW.cantidad_disponible = 0 THEN
         SET NEW.estado = 'no disponible';
     END IF;
@@ -65,17 +66,17 @@ CREATE TRIGGER petshop_ecommerce.validar_producto_antes_de_insertar_en_orden
 BEFORE INSERT ON petshop_ecommerce.DETALLE_DE_ORDEN
 FOR EACH ROW
 BEGIN
-	DECLARE var_estado_producto VARCHAR(60);
+	DECLARE var_estado_producto VARCHAR(16);
     DECLARE var_cantidad INT;
-    DECLARE var_estado VARCHAR(10);
+    DECLARE var_estado_orden VARCHAR(12);
     
     SELECT estado
-    INTO var_estado
+    INTO var_estado_orden
     FROM ORDENES_DE_COMPRA
     WHERE id_orden = NEW.id_orden;
     
-    IF var_estado = 'cancelada' THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se pueden agregar productos a una orden cancelada';
+    IF var_estado_orden != 'pendiente' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No se pueden agregar productos a una orden cancelada o efecuada';
     END IF;
     
     SELECT estado, cantidad_disponible 
@@ -91,11 +92,10 @@ BEGIN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cantidad insuficiente en stock';
 	END IF;
     
-    UPDATE petshop_ecommerce.PRODUCTOS
-    SET cantidad_disponible= cantidad_disponible - NEW.cantidad
-    WHERE id_producto = NEW.id_producto;
 END //
 DELIMITER ;
+
+-- Luego de insertar un producto valido
 
 -- Renovacion de ultima interaccion con un carrito de compra
 DROP TRIGGER IF EXISTS petshop_ecommerce.renovar_interaccion_de_carrito_al_insertar_producto;
