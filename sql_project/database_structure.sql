@@ -80,7 +80,7 @@ CREATE TABLE ANIMALES (
 CREATE TABLE ORDENES_DE_COMPRA (
 	id_orden int PRIMARY KEY AUTO_INCREMENT,
     id_usuario int NOT NULL,
-    estado enum('pendiente', 'efectuada', 'cancelado') DEFAULT 'pendiente',
+    estado enum('pendiente', 'efectuada', 'cancelada') DEFAULT 'pendiente',
     fecha_de_orden datetime NOT NULL DEFAULT(now())
 )COMMENT 'Tabla de las ordenes de compra registradas historiamente, relacionada al usuario que la pidio';
 
