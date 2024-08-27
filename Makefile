@@ -9,9 +9,11 @@ PASSWORD=${MYSQL_ROOT_PASSWORD}
 DATABASE=${MYSQL_DATABASE}
 USER=${MYSQL_USER}
 
+
 DOCKER_COMPOSE_FILE=./docker-compose.yml
 DATABASE_CREATION=./sql_project/database_structure.sql
 DATABASE_POPULATION=./sql_project/population.sql
+CURDATE=$(shell date "+%Y-%m-%d-%H:%M:%S")
 
 FILES=funciones vistas  stored_procedures triggers user_roles
 
@@ -51,6 +53,10 @@ access-db:
 	@echo "Access to db-client"
 	docker exec -it $(SERVICE_NAME) mysql -u$(MYSQL_USER) -p$(PASSWORD) 
 
+backup-db:
+	@echo "Back up database by structure and data"
+	# Dump MySQL database to a file
+	docker exec -it $(SERVICE_NAME) mysqldump -u root -p$(PASSWORD) $(DATABASE) > ./backups/backup_petshop$(CURDATE).sql
 
 down:
 	@echo "Remove the Database"
