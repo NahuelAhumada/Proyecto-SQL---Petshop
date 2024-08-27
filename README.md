@@ -251,7 +251,11 @@ Si el proyecto se corre de manera local, requerirá colocar la ruta completa de 
 LOAD DATA LOCAL INFILE   '/sql_project/data_csv/nombre_de_archivo.csv'
 ```
 
+Al terminar la inserción, los registro deben quedar de la siguiente forma:
+
 ![REGISTROS](images/registros.png)
+
+Esto se puede corroborar desde 'check_db_objects.sql'
 
 **Nota:**
  Los archivos csv fueron creados en windows; en el caso de que cuente con archivos creados en linux, se debe modificar la siguiente linea:
@@ -457,33 +461,37 @@ Al terminar la ejecución, recorré la tabla CARRITOS y actualiza a la fecha y h
 
 ### 1. validar_nuevo_producto
   
-  Antes de insertar un nuevo producto, se verifica que el precio sea mayor a 0 y que la cantidad disponible sea mayor o igual a 0. En casa de que la cantidad sea 0, se fuerza a insertar el producto como 'no disponible.
+Antes de insertar un nuevo producto, se verifica que el precio sea mayor a 0 y que la cantidad disponible sea mayor o igual a 0. En casa de que la cantidad sea 0, se fuerza a insertar el producto como 'no disponible.
 
 ### 2. validar_producto_al_actualizar
 
-  Misma funcionalidad que el trigger anterior, pero al realizar UPDATE sobre un registro de la tabla PRODUCTO.
+Misma funcionalidad que el trigger anterior, pero al realizar UPDATE sobre un registro de la tabla PRODUCTO.
 
 ### 3. crear_carrito_para_usuario
    
-  Luego de crear un Usuario nuevo, este Trigger crea un nuevo producto en la tabla CARRITO, asociandolo al ese mismo usuario.
+Luego de crear un Usuario nuevo, este Trigger crea un nuevo producto en la tabla CARRITO, asociandolo al ese mismo usuario.
 
 ### 4. validar_producto_antes_de_insertar_en_orden
   
-  Antes de insertar un producto en una orden de compra, se verifica que esta ultima no sea una orden de compra cancelada. El producto que va a ser insertado debe estar en estado 'publicado' y su cantidad disponible deber ser mayor o igual a la que va a insertarse en el DETALLE_DE_ORDEN. En caso de que alguna de esas condiciones no se cumplan, lanza un SIGNAL.
+Antes de insertar un producto en una orden de compra, se verifica que esta ultima no sea una orden de compra cancelada. El producto que va a ser insertado debe estar en estado 'publicado' y su cantidad disponible deber ser mayor o igual a la que va a insertarse en el DETALLE_DE_ORDEN. En caso de que alguna de esas condiciones no se cumplan, lanza un SIGNAL.
 
 ### 5. renovar_interaccion_de_carrito_al_insertar_producto
 
-  Al insertar un registro en ITEM_CARRITO, el registro de la tabla CARRITO al que esta asociado actualiza su valor de fecha_interaccion.
+Al insertar un registro en ITEM_CARRITO, el registro de la tabla CARRITO al que esta asociado actualiza su valor de fecha_interaccion.
 
 ### 6. renovar_interaccion_de_carrito_al_actualizar
 
-  Al actualizar un registro en ITEM_CARRITO, el registro de la tabla CARRITO al que esta asociado actualiza su valor de fecha_interaccion.
+Al actualizar un registro en ITEM_CARRITO, el registro de la tabla CARRITO al que esta asociado actualiza su valor de fecha_interaccion.
 
 ---
 
 ## Roles y permisos
 
+En principio, la base de datos cuenta con 5 roles y un usuario para cada uno de ellos
+
 ## Back up de la base de datos
+
+La base de datos cuenta con un backup generado con desde MYSQL Workbench, el cual puede utilizarse para la recuperación los datos y las funcionalidades que vienen por defecto:
 
 ![BACKUP](images/backup.png)
 
