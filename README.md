@@ -251,6 +251,8 @@ Si el proyecto se corre de manera local, requerirá colocar la ruta completa de 
 LOAD DATA LOCAL INFILE   '/sql_project/data_csv/nombre_de_archivo.csv'
 ```
 
+![REGISTROS](images/Captura cantidad de registros.png)
+
 **Nota:**
  Los archivos csv fueron creados en windows; en el caso de que cuente con archivos creados en linux, se debe modificar la siguiente linea:
 
@@ -411,19 +413,43 @@ Al terminar la ejecución, recorré la tabla CARRITOS y actualiza a la fecha y h
 
 ### 2. realizar_compra(IN var_id_carrito INT, IN var_id_metodo_pago INT, IN var_id_direccion INT)
    
-   Por medio de este procedimiento, una vez que sa validen los datos ingresados, se genera una nueva orden de compra correspondiendo al usuario dueño del carrito. A continuación, los datos de cada producto relacionado al carrito, pasan a ser relacionado a la orden de compra generada ingresandolos en la tabla DETALLE_ORDEN, con el dato de precio que se recuepera en la tabla PRODUCTOS y la cantidad registrada en ITEM_CARRITO. Luego de esto, se crean 2 registros relacionados a la nueva orden de compra: Uno para el pago correspondiente y otro para el despacho de pedido. Para este último, se debe considerar los siguientes punto:
+   Por medio de este procedimiento, una vez que sa validen los datos ingresados, se genera una nueva orden de compra correspondiendo al usuario dueño del carrito. A continuación, los datos de cada producto relacionado al carrito, pasan a ser relacionado a la orden de compra generada ingresandolos en la tabla DETALLE_DE_ORDEN, con el dato de precio que se recuepera en la tabla PRODUCTOS y la cantidad registrada en ITEM_CARRITO. Luego de esto, se vacian los registros de ITEM_CARRITO correspondiente a `var_id_carrito` y se resta del stock las respectivas cantidades de cada PRODUCTO ingresadas en DETALLE_DE_ORDEN. Para finalizar, se crean 2 registros relacionados a la nueva orden de compra: Uno para el pago correspondiente y otro para el despacho de pedido. Para este último, se debe considerar los siguientes punto:
 
    - 1. Si el dato de direccion es nulo, se genera una registro de forma que este indique que el pedido será retirado en el local
    - 2. Si el dato es no nulo, se debe verificar que la direccion este relacionada con el usuario. Si hay relación, se crea un registro indicando que el pedido va a ser enviado al domicilio.
    
-   Cabe aclarar que el stock de cada producto se descuenta mediante un Trigger, los cuales lanzan un SIGNAL al intentar descontar una cantidad mayor a la disponible. Debido a las validaciones y errores que pueden suceder durante las transacciones, se utiliza TCL para realizar un COMMIT el terminar el procedimiento sin errores. En caso de que se lanze una excepción durante la ejecución, todos los movimientos se anulan.
+  Debido a las validaciones y errores que pueden suceder durante las transacciones, se utiliza TCL para realizar un COMMIT el terminar el procedimiento sin errores. En caso de que se lanze una excepción durante la ejecución, todos los movimientos se anulan.
    
-   Al terminar la ejecución, se vacian los items de la tabla ITEM_CARRITO relacionados al id que se pasó por parámetro.
+  **Aclaraciones**
+
+  ```sql
+  LAST_INSERTED_ID()
+  ```
+  Se implementó esta función de MYSQL para recuperar el id de la nueva orden de compra generada. A pesar de que los cambios no impactan en la base de datos hasta llegar al COMMIT, el valor AUTOINCREMENTAL del id aumenta de todas formas. De hecho, durante las pruebas con el procedimiento se dislumbró que si ocurre un fallo durante el procedimiento posterior a la creación de la nueva orden de compra, el valor AUTOINCREMENTAL aumenta a pesar de hacer ROLLBACK, provocando saltos de valor en id_orden.
+
+  ¿Cuando ocurre esta situación?
+  
+  **Validación en triggers**
+
+  Es posible que se levante un SIGNAL mediante trigger al intentar insertar una cantidad mayor de un PRODUCTOS de la que se dispone en una nueva ORDEN_DE_COMPRA. 
+
+  **Posible solución**
+
+  Validar antes de ingresar cantidades en nuevo carrito: Las cantidades en el stock de cada PRODUCTO se podrían manejar al momento de referenciarse en la tabla ITEM_CARRITO y no en DETALLE_DE_ORDEN.
 
 ### 3. cancelar_compra(IN var_id_orden INT)
 
-  Setea a estado 'cancelado' los campos correspondientes al id_orden de las tablas ORDENES_DE_COMPRA, PAGOS y DESPACHO_DE_PEDIDOS. Luego de eso, adiciona a cada producto del pedido la cantidad disponible que habia sido solicitada en el pedido.
+  Setea a estado 'cancelado' los campos correspondientes al id_orden de las tablas ORDENES_DE_COMPRA, PAGOS y DESPACHO_DE_PEDIDOS. Luego de eso, adiciona a cada producto del pedido la cantidad disponible que habia sido solicitada en el pedido. Al finalizar, las cantidades de cada producto que hayan sido solicitadas en DETALLE_DE_ORDEN se recomponen al stock de cada producto.
 
+**Aclaración sobre el manejo de stock de productos**
+
+  En un principio se habia manejado la posibilidad de controlar el stock mediante triggers. Esta solución no resultó adecuada debido a que, al insertar productos de forma masiva, se estaría leyendo y modificando registros de la misma en periodos de tiempo muy cortos. En versiones anteriores del proyecto, debido a esto, podia ocurrir el siguiente error:
+
+  ```
+  Error Code: 1442. Can't update table in stored function/trigger because it is already used by statement which invoked this stored function/trigger.
+  ```
+
+  Debido a esto, se resolvió manejar el stock desde stored procedure.
   
 ---
 
@@ -444,8 +470,6 @@ Al terminar la ejecución, recorré la tabla CARRITOS y actualiza a la fecha y h
 ### 4. validar_producto_antes_de_insertar_en_orden
   
   Antes de insertar un producto en una orden de compra, se verifica que esta ultima no sea una orden de compra cancelada. El producto que va a ser insertado debe estar en estado 'publicado' y su cantidad disponible deber ser mayor o igual a la que va a insertarse en el DETALLE_DE_ORDEN. En caso de que alguna de esas condiciones no se cumplan, lanza un SIGNAL.
-
-  Luego de insertar el producto en el DETALLE_DE_ORDEN, se reduce la cantidad de stock del producto mediante un UPDATE.
 
 ### 5. renovar_interaccion_de_carrito_al_insertar_producto
 
