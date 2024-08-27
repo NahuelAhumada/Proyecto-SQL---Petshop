@@ -251,7 +251,7 @@ Si el proyecto se corre de manera local, requerirá colocar la ruta completa de 
 LOAD DATA LOCAL INFILE   '/sql_project/data_csv/nombre_de_archivo.csv'
 ```
 
-![REGISTROS](images/Captura cantidad de registros.png)
+![REGISTROS](images/registros.png)
 
 **Nota:**
  Los archivos csv fueron creados en windows; en el caso de que cuente con archivos creados en linux, se debe modificar la siguiente linea:
@@ -484,6 +484,8 @@ Al terminar la ejecución, recorré la tabla CARRITOS y actualiza a la fecha y h
 ## Roles y permisos
 
 ## Back up de la base de datos
+
+![BACKUP](images/backup.png)
 
 ## Importante para correr la base de datos
 
