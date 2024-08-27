@@ -43,7 +43,7 @@ VALUES
 LOAD DATA LOCAL INFILE   '/sql_project/data_csv/subcategorias.csv'
     INTO TABLE petshop_ecommerce.SUBCATEGORIAS
     FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-    LINES TERMINATED BY '\r\n'
+    LINES TERMINATED BY '\n'
     IGNORE 1 LINES
     (nombre,id_categoria);
 
@@ -74,7 +74,7 @@ VALUES
 LOAD DATA LOCAL INFILE   '/sql_project/data_csv/productos.csv'
 	INTO TABLE PRODUCTOS
     FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-    LINES TERMINATED BY '\r\n'
+    LINES TERMINATED BY '\n'
     IGNORE 1 LINES
     (nombre, descripcion,precio,imagen,cantidad_disponible,estado,id_subcategoria,id_marca);
 /* Tabla Metodos de Pago*/
@@ -91,7 +91,7 @@ VALUES
 LOAD DATA LOCAL INFILE '/sql_project/data_csv/usuarios.csv'
 	INTO TABLE USUARIOS
     FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-    LINES TERMINATED BY '\r\n'
+    LINES TERMINATED BY '\n'
     IGNORE 1 LINES
     (nombre_de_usuario,nombres,apellidos, email, contrasena);
 
@@ -99,7 +99,7 @@ LOAD DATA LOCAL INFILE '/sql_project/data_csv/usuarios.csv'
 LOAD DATA LOCAL INFILE '/sql_project/data_csv/direcciones_de_envio.csv'
 	INTO TABLE DIRECCIONES_DE_ENVIO
     FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-    LINES TERMINATED BY '\r\n'
+    LINES TERMINATED BY '\n'
     IGNORE 1 LINES
     (calle,piso,localidad, provincia, pais, codigo_postal);
 
