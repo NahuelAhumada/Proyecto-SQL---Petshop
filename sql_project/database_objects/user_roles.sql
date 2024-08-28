@@ -16,6 +16,8 @@ GRANT EXECUTE ON PROCEDURE petshop_ecommerce.cancelar_compra TO 'rol_ventas';
 
 CREATE ROLE IF NOT EXISTS 'rol_marketing';
 GRANT SELECT ON petshop_ecommerce.ORDENES_DE_COMPRA TO 'rol_marketing';
+GRANT SELECT ON petshop_ecommerce.PRODUCTOS TO 'rol_marketing';
+GRANT SELECT ON petshop_ecommerce.DETALLE_DE_ORDEN TO 'rol_marketing';
 GRANT SELECT ON petshop_ecommerce.PRECIO_TOTAL_DE_CARRITOS TO 'rol_marketing';
 GRANT SELECT ON petshop_ecommerce.TOTAL_A_PAGAR_POR_ORDEN_DE_COMPRA TO 'rol_marketing';
 GRANT SELECT ON petshop_ecommerce.VISTA_PRODUCTOS_POR_TOTAL_VENDIDOS TO 'rol_marketing';
