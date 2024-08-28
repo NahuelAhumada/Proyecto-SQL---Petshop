@@ -490,12 +490,22 @@ Al actualizar un registro en ITEM_CARRITO, el registro de la tabla CARRITO al qu
 ## Roles y permisos
 
 En principio, la base de datos cuenta con 5 roles y un usuario para cada uno de ellos
+'rol_administrador'
+'rol_ventas'
+'rol_marketing'
 
 ## Back up de la base de datos
 
-La base de datos cuenta con un backup generado con desde MYSQL Workbench, el cual puede utilizarse para la recuperación los datos y las funcionalidades que vienen por defecto:
+La base de datos cuenta con un backup generado con desde MYSQL Workbench, el cual puede utilizarse para la recuperación los datos y las funcionalidades que vienen por defecto en la direccion
+`/backups/backup_petshop_inicial`:
 
 ![BACKUP](images/backup.png)
+
+Admeás, se agregó la funcionalidad para crear desde la terminal un nuevo  backup haciendo uso de mysqldump:
+
+```bash
+make backup-db
+```
 
 ## Importante para correr la base de datos
 
@@ -511,18 +521,21 @@ Edit -> Preferences -> SQL Editor -> Destildar la opcion 'Safe updates'
 ![Preferences](images/Captura_preferences.png)
 
 
-Para correr de forma automatica por consola, cambiar los valores del archivo .env
+Para correr la base de datos por consola en code, cambiar los valores del archivo .env
 
 ```
 MYSQL_ROOT_PASSWORD=root
 MYSQL_USER=root
 ```
-A continuación, ejecutar el comando
+A continuación, ejecutar los siguientes comandos
 
-```bash
-make
-```
----
+
+`make up` levanta el proyecto, generando la estructura e insertando los datos
+`make objects` crea las funciones, vistas, stored procedures, triggers y roles
+`make test-db` comprueba toda la estructura y la cantidad de registros insertados
+`make access-db` accede a la base de datos
+`make down` en caso que se quiera borrar la base de datos
+
 
 ### Ideas para integrar al proyecto:
 
