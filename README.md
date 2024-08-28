@@ -498,7 +498,7 @@ En principio, la base de datos cuenta con 5 roles y un usuario por defecto para 
 
 - 'rol_manager_de_productos': Rol diseñado para manejar los productos y sus categorias. Excepto el borrado de registros, tiene acceso a las tablas PRODUCTOS, SUBCATEGORIAS, CATEGORIAS, ANIMALES y MARCAS.
 
-- 'rol_manager_de_usuarios': Rol de administración de usuarios. Con excepción de la eliminación de registros. 
+- 'rol_manager_de_usuarios': Rol de administración de usuarios. Con excepción de la eliminación de registros, tiene permisos para las tablas USUARIOS, DIRECCIONES y la tabla intermedia USUARIOS_DIRECCIONES. A su vez, puede acceder a la vista USUARIOS_SIN_COMPRAS_HACE_3_MESES. 
 
 ## Back up de la base de datos
 
