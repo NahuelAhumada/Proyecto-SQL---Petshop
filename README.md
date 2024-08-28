@@ -489,10 +489,16 @@ Al actualizar un registro en ITEM_CARRITO, el registro de la tabla CARRITO al qu
 
 ## Roles y permisos
 
-En principio, la base de datos cuenta con 5 roles y un usuario para cada uno de ellos
-'rol_administrador'
-'rol_ventas'
-'rol_marketing'
+En principio, la base de datos cuenta con 5 roles y un usuario por defecto para cada uno de ellos
+- 'rol_administrador': Tiene los privilegios de SELECT, INSERT, UPDATE y DELETA en cada tabla, asi como acceso a todas las vistas, funcione, procedimientos y triggers. Tiene la capacidad de otorgar esos mismos privilegios a otros usuarios o roles.
+  
+- 'rol_ventas': Rol orientado a la gestion de ventas de los producto. A excepción de DELETE, tiene los permisos de las tablas ORDENES_DE_COMPRA, DETALLE_DE_ORDEN, PAGOS y DESPACHO_DE_PEDIDOS. No interactua con la tabla PRODUCTOS direcatamente, pero puede acceder a los STORED PROCEDURES realizar_compra() y cancelar_compra(). Por motivos de visualización, se le dio acceso de SELECT a tablas ITEM_CARRITO, CARRITOS y METODOS_DE_PAGO.
+  
+- 'rol_marketing': Rol diseñado para tener solo permiso de SELECT a las tablas ORDENES_DE_COMPRA, DETALLE_DE_ORDEN y PRODUCTOS, así como también a vistas diseñadas de PRECIO_TOTAL_DE_CARRITOS, TOTAL_A_PAGAR_POR_ORDEN_DE_COMPRA, VISTA_PRODUCTOS_POR_TOTAL_VENDIDOS y HISTORIAL_VENTA_DE_PRODUCTOS_POR_MONTO_FINAL.
+
+- 'rol_manager_de_productos': Rol diseñado para manejar los productos y sus categorias. Excepto el borrado de registros, tiene acceso a las tablas PRODUCTOS, SUBCATEGORIAS, CATEGORIAS, ANIMALES y MARCAS.
+
+- 'rol_manager_de_usuarios': Rol de administración de usuarios. Con excepción de la eliminación de registros. 
 
 ## Back up de la base de datos
 
