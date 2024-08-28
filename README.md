@@ -530,11 +530,11 @@ MYSQL_USER=root
 A continuación, ejecutar los siguientes comandos
 
 
-`make up` levanta el proyecto, generando la estructura e insertando los datos
-`make objects` crea las funciones, vistas, stored procedures, triggers y roles
-`make test-db` comprueba toda la estructura y la cantidad de registros insertados
-`make access-db` accede a la base de datos
-`make down` en caso que se quiera borrar la base de datos
+- `make up` levanta el proyecto, generando la estructura e insertando los datos
+- `make objects` crea las funciones, vistas, stored procedures, triggers y roles
+- `make test-db` comprueba toda la estructura y la cantidad de registros insertados
+- `make access-db` accede a la base de datos
+- `make down` en caso que se quiera borrar la base de datos
 
 
 ### Ideas para integrar al proyecto:
